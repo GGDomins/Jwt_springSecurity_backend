@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Document</title>
+
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/signup.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+<div class="signup-container">
+  <form id="form">
+    <h1>회원가입</h1>
+    <p>이미 회원이신가요? <a href="#" class="to-login">로그인하기</a></p>
+    <input type="text" id="name" name="name" placeholder="이름">
+    <input type="text" id="email" name="email" placeholder="이메일">
+    <div class="password-box">
+      <input class="password" type="password" id="password" name="password" placeholder="비밀번호">
+      <span class="material-symbols-outlined" id="showPass">visibility</span>
+    </div>
+    <input type="password" id="password-check" name="password" placeholder="비밀번호 확인">
+    <button id="submit" type="submit">가입하기</button>
+  </form>
+</div>
+
+<script src="/js/send.js"></script>
+</body>
+</html>

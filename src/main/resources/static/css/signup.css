@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap');
+
+body {
+    font-family: 'Nanum Gothic';
+}
+
+.signup-container {
+    position: absolute;
+    width: 20rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+}
+
+.to-login {
+    color: #436B95;
+    transition: 0.3s;
+}
+
+.to-login:hover {
+    color: #1D2951;
+}
+
+input {
+    display: block;
+    font-size: 1rem;
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid #aeaeae;
+    margin: 2.5rem 0 0 0;
+    padding: 0.5rem;
+}
+
+input:focus {
+    outline: none;
+    border-bottom: 1.5px solid #373737;
+}
+
+.password-box {
+    position: relative;
+}
+
+.password-box > .material-symbols-outlined {
+    position: absolute;
+    font-size: 1.3rem;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #436B95;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    margin: 2.5rem 0 0 0;
+    width: 100%;
+    padding: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #1D2951;
+}

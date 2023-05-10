@@ -6,16 +6,16 @@ body {
 
 .signup-container {
     position: absolute;
-    width: 20rem;
     top: 50%;
     left: 50%;
+    width: 20rem;
     transform: translate(-50%, -50%);
 }
 
 h1 {
+    margin: 0 0 1rem 0;
     font-size: 2rem;
     font-weight: 600;
-    margin: 0 0 1rem 0;
 }
 
 .to-login {
@@ -29,17 +29,37 @@ h1 {
 
 input {
     display: block;
-    font-size: 1rem;
+    margin: 2.5rem 0 0 0;
     width: 100%;
     border: none;
     border-bottom: 1.5px solid #aeaeae;
-    margin: 2.5rem 0 0 0;
     padding: 0.5rem;
+    font-size: 1rem;
+}
+
+#password {
+    margin: 1rem 0 0 0;
 }
 
 input:focus {
-    outline: none;
+    outline: block;
     border-bottom: 1.5px solid #373737;
+}
+
+.email-message {
+    display: block;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 0.8rem;
+    color: #ff5c5c;
+}
+
+.pwd-message {
+    display: block;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 0.8rem;
+    color: #ff5c5c;
 }
 
 .password-box {
@@ -48,28 +68,28 @@ input:focus {
 
 .password-box > .material-symbols-outlined {
     position: absolute;
-    font-size: 1.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     top: 50%;
     right: 0;
     transform: translateY(-50%);
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-size: 1.3rem;
 }
 
 button {
+    margin: 2.5rem 0 0 0;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
     font-size: 1rem;
     font-weight: bold;
     background-color: #436B95;
     color: #fff;
-    border: none;
-    border-radius: 6px;
-    margin: 2.5rem 0 0 0;
-    width: 100%;
-    padding: 1rem;
-    cursor: pointer;
-    transition: 0.3s;
 }
 
 button:hover {

@@ -27,5 +27,15 @@ class Member_ControllerTest {
         Assertions.assertThat(response1.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
+    @Test
+    void JSON검사() {
+        Member_Dto memberDto = new Member_Dto("홍용준", "test@test.com", "1234");
+        ResponseEntity<SigninResponse> response = memberController.signup(memberDto);
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertThat(response.getBody()).isNotNull();
+        System.out.println(response.getBody() + "responseBody");
+    }
+
+
 
 }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import restful_sign_project.controller.Response.LoginResponse;
 import restful_sign_project.controller.Response.SigninResponse;
 import restful_sign_project.controller.status.ResponseMessage;
 import restful_sign_project.controller.status.StatusCode;
@@ -26,7 +27,7 @@ public class Member_Controller {
         this.memberService = memberService;
     }
 
-    @PostMapping("/address")
+    @PostMapping("/signup")
     public ResponseEntity<SigninResponse> signup(@RequestBody Member_Dto memberDto) {
         SigninResponse response = new SigninResponse();
         Optional<Member> memberFind = memberService.findMemberByEmail(memberDto.getEmail());
@@ -42,4 +43,10 @@ public class Member_Controller {
         }
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+//    @PostMapping("/Login")
+//    public ResponseEntity<LoginResponse> login(@RequestBody Member_Dto memberDto) {
+//        LoginResponse response = new LoginResponse();
+//
+//    }
 }

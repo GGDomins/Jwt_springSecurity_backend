@@ -1,11 +1,12 @@
 package restful_sign_project.controller.Response;
 
 import lombok.Builder;
+import lombok.Data;
 import restful_sign_project.controller.status.ResponseMessage;
 import restful_sign_project.controller.status.StatusCode;
 
 import java.util.List;
-
+@Data
 public class LoginResponse {
     private int code;
     private String message;

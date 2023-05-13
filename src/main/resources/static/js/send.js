@@ -13,7 +13,7 @@ function submitData(event) {
         password: password
     };
 
-    fetch('/address', {
+    fetch('/api/signup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

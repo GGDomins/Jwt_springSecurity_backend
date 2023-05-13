@@ -13,7 +13,7 @@ function submitData(event) {
         password: password
     };
 
-    fetch('/address', {
+    fetch('/api/signup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -29,9 +29,9 @@ function submitData(event) {
     .then(data => {
         console.log(data);
     })
-    // .catch(error => {
-    //     console.error('fetch operation problem:', error);
-    // });
+    .catch(error => {
+        console.error('fetch operation problem:', error);
+    });
 
     event.preventDefault();
 }

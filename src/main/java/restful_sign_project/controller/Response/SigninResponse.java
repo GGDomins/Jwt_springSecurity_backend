@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import restful_sign_project.controller.status.ResponseMessage;
 import restful_sign_project.controller.status.StatusCode;
+import restful_sign_project.entity.Member;
 
 @Data
 public class SigninResponse {

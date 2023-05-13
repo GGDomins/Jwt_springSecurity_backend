@@ -20,18 +20,18 @@ function submitData(event) {
         },
         body: JSON.stringify(data)
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response error');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data);
-    })
-    .catch(error => {
-        console.error('fetch operation problem:', error);
-    });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response error');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('fetch operation problem:', error);
+        });
 
     event.preventDefault();
 }

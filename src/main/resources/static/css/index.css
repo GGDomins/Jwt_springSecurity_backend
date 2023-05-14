@@ -1,0 +1,21 @@
+.index-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login {
+    display: inline-block;
+    margin: 0 1rem 0 0;
+    padding: 1rem;
+    border: 1px solid #000;
+    font-size: 2rem;
+}
+
+.signup {
+    display: inline-block;
+    padding: 1rem;
+    border: 1px solid #000;
+    font-size: 2rem;
+}

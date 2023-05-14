@@ -8,5 +8,7 @@ public class ResponseMessage {
     public static final String EMAIL_EXISTED = "이미 사용 중인 이메일입니다.";
     public static final String NOT_FOUND_USER = "회원을 찾을 수 없습니다.";
     public static final String UNAUTHORIZED = "회원 인증 실패";
+    public static final String EMAIL_NOT_FOUND = "이메일을 잘못 입력하셨습니다.";
+    public static final String PASSWORD_ERROR = "비밀번호를 잘못 입력하셨습니다.";
 
 }

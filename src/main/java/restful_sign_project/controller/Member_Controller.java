@@ -67,18 +67,31 @@ public class Member_Controller {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody Map<String, String> user) {
-
-        Member member = memberService.findMemberByEmail(user.get("email"))
-                .orElseThrow(() -> new IllegalStateException("잘못된 이메일을 작성하셨습니다."));
+        LoginResponse loginResponse = new LoginResponse();
+        Optional<Member> member1 = memberService.findMemberByEmail(user.get("email"));
+        if (!member1.isPresent()) {
+            loginResponse = LoginResponse.builder()
+                    .code(StatusCode.BAD_REQUEST)
+                    .message(ResponseMessage.EMAIL_NOT_FOUND)
+                    .data(null)
+                    .build();
+            return new ResponseEntity<>(loginResponse, HttpStatus.BAD_REQUEST);
+        }
+        Member member = member1.get();
         log.info(member.getPassword());
         log.info(user.get("password"));
         if (!encoder.matches(user.get("password"),member.getPassword())) {
-            throw new IllegalStateException("잘못된 비밀번호를 작성하셨습니다.");
+            loginResponse = LoginResponse.builder()
+                    .code(StatusCode.BAD_REQUEST)
+                    .message(ResponseMessage.PASSWORD_ERROR)
+                    .data(null)
+                    .build();
+            return new ResponseEntity<>(loginResponse, HttpStatus.BAD_REQUEST);
         }
         String token = jwtTokenProvider.createToken(member.getEmail(), key, expireTimeMs);
         log.info(token);
 
-        LoginResponse loginResponse = new LoginResponse();
+
         loginResponse = LoginResponse.builder()
                 .code(StatusCode.OK)
                 .message(ResponseMessage.LOGIN_SUCCESS)

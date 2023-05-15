@@ -27,4 +27,4 @@ server:
 #  port: 1234
 jwt:
   token:
-    secret: "myprojectsecret"
+    secret: "missyouannawhereareyou"

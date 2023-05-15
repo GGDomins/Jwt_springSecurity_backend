@@ -107,7 +107,7 @@ public class Member_Controller {
                 .build();
         return ResponseEntity.ok(loginResponse);
     }
-    @GetMapping("/my-page")
+    @GetMapping("/my-page") // http 본문에
     public ResponseEntity<PageResponse> myPage(HttpServletRequest request) {
         String token = jwtTokenProvider.resolveToken(request);
         PageResponse pageResponse = new PageResponse();
@@ -118,7 +118,7 @@ public class Member_Controller {
            pageResponse = PageResponse.builder()
                     .code(StatusCode.OK)
                     .message(ResponseMessage.AUTHORIZED)
-                    .data(null)
+                    .data(token)
                     .build();
             // 인증된 사용자만 접근 가능한 페이지
             return ResponseEntity.ok(pageResponse);

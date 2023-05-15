@@ -14,7 +14,7 @@ public class LoginResponse {
 
     public LoginResponse() {
         this.code = code = StatusCode.BAD_REQUEST;
-        this.message = ResponseMessage.EMAIL_EXISTED;
+        this.message = ResponseMessage.LOGIN_FAILED;
         this.data = null;
     }
 

@@ -15,6 +15,7 @@ import restful_sign_project.entity.Member;
 
 import restful_sign_project.repository.Member_Repository;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -27,8 +28,14 @@ public class Member_Service implements UserDetailsService {
     @Transactional
     public Member join(Member_Dto memberDto) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        memberDto.setPassWord(passwordEncoder.encode(memberDto.getPassWord()));
-        return memberRepository.save(memberDto.to_Entity());
+        String bcry_password = passwordEncoder.encode(memberDto.getPassWord());
+//        memberDto.setPassWord(passwordEncoder.encode(memberDto.getPassWord()));
+        Member member = Member.builder()
+                .email(memberDto.getEmail())
+                .passWord(bcry_password)
+                .roles(Collections.singletonList("ROLE_USER"))
+                .build();
+        return memberRepository.save(member);
     }
 
     public Optional<Member> findMemberByEmail(String email) {

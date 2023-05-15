@@ -11,7 +11,7 @@ function loginRequest(event) {
         password: password
     };
 
-    fetch('api/signup', {
+    fetch('address', {
         method: 'POST',
         headers: {
             'Content-type': 'application/json'

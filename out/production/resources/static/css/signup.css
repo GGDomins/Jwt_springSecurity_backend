@@ -37,7 +37,11 @@ input {
     font-size: 1rem;
 }
 
-#password {
+input[type='password']:not(:placeholder-shown) {
+    letter-spacing: 2px;
+}
+
+#password, #password-check {
     margin: 1rem 0 0 0;
 }
 
@@ -51,6 +55,7 @@ input:focus {
     height: 1.5rem;
     line-height: 1.5rem;
     font-size: 0.8rem;
+    text-align: right;
     color: #ff5c5c;
 }
 
@@ -59,6 +64,16 @@ input:focus {
     height: 1.5rem;
     line-height: 1.5rem;
     font-size: 0.8rem;
+    text-align: right;
+    color: #000000;
+}
+
+.pwdcheck-message {
+    display: block;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 0.8rem;
+    text-align: right;
     color: #ff5c5c;
 }
 
@@ -68,9 +83,7 @@ input:focus {
 
 .password-box > .material-symbols-outlined {
     position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
     top: 50%;
     right: 0;
     transform: translateY(-50%);

@@ -12,12 +12,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import restful_sign_project.JWT.refresh.RefreshToken;
+import restful_sign_project.controller.Response.RefreshTokenResponse;
+import restful_sign_project.repository.Member_Repository;
 
 import javax.annotation.PostConstruct;
+import javax.security.auth.message.AuthException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 // 토큰을 생성하고 검증하는 클래스입니다.
 // 해당 컴포넌트는 필터클래스에서 사전 검증을 거칩니다.
@@ -27,9 +32,11 @@ public class JwtTokenProvider {
     private String secretKey = "missyouannawhereareyou";
 
     private final UserDetailsService userDetailsService;
+    private final Member_Repository memberRepository;
 
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
     @PostConstruct
+
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
@@ -41,6 +48,20 @@ public class JwtTokenProvider {
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
+                .claim("AUTHORITIES_KEY", roles)
+                .setIssuedAt(now) // 토큰 발행 시간 정보
+                .setExpiration(new Date(now.getTime() + tokenValidTime)) // set Expire Time
+                .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘과
+                // signature 에 들어갈 secret값 세팅
+                .compact();
+    }
+
+    public String createRefreshToken(String userPk, List<String> roles, Long tokenValidTime) {
+        Claims claims = Jwts.claims().setSubject(userPk);
+        claims.put("roles", roles);
+        Date now = new Date();
+        return Jwts.builder()
+                .claim("type", roles)
                 .setIssuedAt(now) // 토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + tokenValidTime)) // set Expire Time
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘과
@@ -78,4 +99,5 @@ public class JwtTokenProvider {
             return false;
         }
     }
+
 }

@@ -34,6 +34,4 @@ public class Member_Repository {
         return result.stream().findFirst();
     }
 
-
-
 }

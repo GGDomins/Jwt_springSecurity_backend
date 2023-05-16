@@ -1,15 +1,17 @@
 package restful_sign_project.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.hibernate.query.criteria.internal.ParameterContainer;
+import org.hibernate.tool.schema.internal.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,16 +19,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import restful_sign_project.JWT.JwtTokenProvider;
-import restful_sign_project.controller.Response.LoginResponse;
-import restful_sign_project.controller.Response.PageResponse;
-import restful_sign_project.controller.Response.PageSuccessResponse;
-import restful_sign_project.controller.Response.SigninResponse;
+import restful_sign_project.JWT.refresh.RefreshToken;
+import restful_sign_project.JWT.refresh.repository.RefreshTokenRedisRepository;
+import restful_sign_project.controller.Response.*;
 import restful_sign_project.controller.status.ResponseMessage;
 import restful_sign_project.controller.status.StatusCode;
 import restful_sign_project.dto.Member_Dto;
 import restful_sign_project.entity.Member;
-import restful_sign_project.repository.Member_Repository;
 import restful_sign_project.service.Member_Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,15 +41,19 @@ import java.util.*;
 public class Member_Controller {
     @Autowired
     private PasswordEncoder encoder;
+    @Autowired
     private final Member_Service memberService;
-    public Member_Controller(Member_Service memberService) {
+    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+    public Member_Controller(Member_Service memberService, RefreshTokenRedisRepository refreshTokenRedisRepository) {
         this.memberService = memberService;
+        this.refreshTokenRedisRepository = refreshTokenRedisRepository;
     }
     @Value("${jwt.token.secret}")
     private String key;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
     private Long expireTimeMs = 1000 * 60 * 60l;
+    private Long RefreshExpireTimeMs = 1000 * 60 * 60 * 60l;
 
 
     @PostMapping("/api/signup")
@@ -75,13 +81,15 @@ public class Member_Controller {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody Map<String, String> user) {
+        String clientIp = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest().getRemoteAddr();
         LoginResponse loginResponse = new LoginResponse();
         Optional<Member> member1 = memberService.findMemberByEmail(user.get("email"));
         if (!member1.isPresent()) {
             loginResponse = LoginResponse.builder()
                     .code(StatusCode.BAD_REQUEST)
                     .message(ResponseMessage.EMAIL_NOT_FOUND)
-                    .data(null)
+                    .token(null)
                     .build();
             return new ResponseEntity<>(loginResponse, HttpStatus.BAD_REQUEST);
         }
@@ -92,21 +100,21 @@ public class Member_Controller {
             loginResponse = LoginResponse.builder()
                     .code(StatusCode.BAD_REQUEST)
                     .message(ResponseMessage.PASSWORD_ERROR)
-                    .data(null)
+                    .token(null)
                     .build();
             return new ResponseEntity<>(loginResponse, HttpStatus.BAD_REQUEST);
         }
         String token = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), expireTimeMs);
         log.info(token);
 
-
         loginResponse = LoginResponse.builder()
                 .code(StatusCode.OK)
                 .message(ResponseMessage.LOGIN_SUCCESS)
-                .data(token)
+                .token(token)
                 .build();
         return ResponseEntity.ok(loginResponse);
     }
+
     @GetMapping("/my-page") // http 본문에
     public ResponseEntity<PageResponse> myPage(HttpServletRequest request) {
         String token = jwtTokenProvider.resolveToken(request);
@@ -118,8 +126,14 @@ public class Member_Controller {
            pageResponse = PageResponse.builder()
                     .code(StatusCode.OK)
                     .message(ResponseMessage.AUTHORIZED)
-                    .data(token)
+                    .token(token)
                     .build();
+//           refreshTokenRedisRepository.save(RefreshToken.builder()
+//                   .id(authentication.getName())
+//                   .ip(clientIp)
+//                   .authorities(authentication.getAuthorities())
+//                   .refreshToken(re)
+//           )
             // 인증된 사용자만 접근 가능한 페이지
             return ResponseEntity.ok(pageResponse);
         } else {

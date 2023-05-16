@@ -34,6 +34,10 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.3.1.RELEASE'
+	// https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+	compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+
 }
 
 tasks.named('test') {

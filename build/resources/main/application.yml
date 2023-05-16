@@ -9,6 +9,7 @@ spring:
     driver-class-name: org.h2.Driver
 
 
+
   jpa:
     hibernate:
       ddl-auto: create #none을 하면 데이터가 유지가 된다.
@@ -16,6 +17,9 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  redis:
+    port: 6379
+    host: localhost
 logging:
   level:
     org.hibernate.sql: debug # hibernate가 생성하는 모든 sql이 log로 보인다.

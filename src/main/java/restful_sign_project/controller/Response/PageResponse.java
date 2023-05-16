@@ -10,18 +10,18 @@ import restful_sign_project.controller.status.StatusCode;
 public class PageResponse {
     private int code;
     private String message;
-    private Object data;
+    private Object token;
 
     public PageResponse() {
         this.code = StatusCode.UNAUTHORIZED;
         this.message = ResponseMessage.UNAUTHORIZED;
-        this.data = null;
+        this.token = null;
     }
 
     @Builder
-    public PageResponse(int code, String message, Object data) {
+    public PageResponse(int code, String message, Object token) {
         this.code = code;
         this.message = message;
-        this.data = data;
+        this.token = token;
     }
 }

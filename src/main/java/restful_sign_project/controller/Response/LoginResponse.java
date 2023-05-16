@@ -10,18 +10,18 @@ import java.util.List;
 public class LoginResponse {
     private int code;
     private String message;
-    private Object data;
+    private Object token;
 
     public LoginResponse() {
         this.code = code = StatusCode.BAD_REQUEST;
         this.message = ResponseMessage.LOGIN_FAILED;
-        this.data = null;
+        this.token = null;
     }
 
     @Builder
-    public LoginResponse(int code, String message, Object data) {
+    public LoginResponse(int code, String message, Object token) {
         this.code = code;
         this.message = message;
-        this.data = data;
+        this.token = token;
     }
 }

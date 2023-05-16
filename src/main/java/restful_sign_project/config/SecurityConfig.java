@@ -26,12 +26,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(); // 비밀번호 암호화를 위한 빈 생성
     }
 
-    // authenticationManager를 Bean 등록합니다.
+
     @Bean
-    @Override
+    @Override    // authenticationManager를 Bean 등록합니다.
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
@@ -49,10 +49,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class); // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣는다
+                        UsernamePasswordAuthenticationFilter.class); // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 실행시킨다.
         // + 토큰에 저장된 유저정보를 활용하여야 하기 때문에 CustomUserDetailService 클래스를 생성합니다.
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+        //stateless한 서비스를 제공하기 위해 세션을 사용하지 않겠다는 것을 설정하고 있다.
+        /**
+         * Stateless란, 서버에서 세션 상태를 관리하지 않고 클라이언트 측에서 모든 요청 정보를 담고 있어야 하는 RESTful API를 구현할 때 사용되는 세션 관리 방식입니다.
+         * 이 방식을 사용하면 서버 측에서 세션 관리에 따른 부하가 감소하고, 확장성이 좋아지며, 보안에도 유리합니다.
+         */
 
     }
 }

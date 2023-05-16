@@ -10,10 +10,10 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableRedisRepositories
 @Configuration
 public class RedisConfig {
-    @Value("${spring.redis.host}")
+    @Value("${spring.redis.host}") // yml에 host 정의
     private String redisHost;
 
-    @Value("${spring.redis.port}")
+    @Value("${spring.redis.port}") // yml에 port 정의
     private int redisPort;
 
     @Bean

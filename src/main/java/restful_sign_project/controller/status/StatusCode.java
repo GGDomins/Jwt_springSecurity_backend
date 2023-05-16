@@ -1,5 +1,7 @@
 package restful_sign_project.controller.status;
-
+/**
+ * Response의 Code 필드에 사용되는 static final 변수들입니다.
+ */
 public class StatusCode {
     public static final int OK = 200;
     public static final int CREATED = 201;

@@ -1,6 +1,5 @@
-package restful_sign_project.JWT.refresh.repository;
+package restful_sign_project.JWT.refresh;
 
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.data.repository.CrudRepository;
 import restful_sign_project.JWT.refresh.RefreshToken;
 

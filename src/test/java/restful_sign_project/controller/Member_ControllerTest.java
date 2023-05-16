@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import restful_sign_project.controller.Response.SigninResponse;
+import restful_sign_project.controller.Response.SignInResponse;
 import restful_sign_project.controller.status.ResponseMessage;
 import restful_sign_project.controller.status.StatusCode;
 
@@ -32,8 +32,8 @@ class Member_ControllerTest {
         requestBody.put("password", "1234");
 
         // when
-        ResponseEntity<SigninResponse> responseEntity = memberController.signup(requestBody);
-        SigninResponse response = responseEntity.getBody();
+        ResponseEntity<SignInResponse> responseEntity = memberController.signup(requestBody);
+        SignInResponse response = responseEntity.getBody();
 
         // then
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());

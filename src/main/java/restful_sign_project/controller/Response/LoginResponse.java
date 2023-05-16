@@ -5,7 +5,9 @@ import lombok.Data;
 import restful_sign_project.controller.status.ResponseMessage;
 import restful_sign_project.controller.status.StatusCode;
 
-import java.util.List;
+/**
+ * Login을 할 때 반환되는 Response입니다.
+ */
 @Data
 public class LoginResponse {
     private int code;

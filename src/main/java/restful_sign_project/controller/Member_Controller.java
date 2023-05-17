@@ -207,12 +207,16 @@ public class Member_Controller {
         // Access Token 갱신
         String newAccessToken = jwtTokenProvider.refreshToken(refreshToken);
 
+        long currentTimeMillis = System.currentTimeMillis();
+        Long expireTimesEND = expireTimeMs + currentTimeMillis; // Spring에서 현재시간에서 expireTimeMs가 더해진 시간을 MS단위로 보낸다
+        log.info(expireTimesEND.toString());
+
         // 새로운 Access Token 값과 함께 응답 객체 생성
         RefreshTokenResponse response = RefreshTokenResponse.builder()
                 .code(StatusCode.OK)
                 .message(ResponseMessage.REFRESH_TOKEN_SUCCESS)
-                .accessToken(newAccessToken)
-                .refreshToken(refreshToken)
+                .token(newAccessToken)
+                .expireTimeMs(expireTimesEND)
                 .build();
 
         return ResponseEntity.ok(response);

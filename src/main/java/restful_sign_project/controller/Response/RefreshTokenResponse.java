@@ -10,6 +10,6 @@ import lombok.Data;
 public class RefreshTokenResponse {
     private int code;
     private String message;
-    private String accessToken;
-    private String refreshToken;
+    private Object token;
+    private Long expireTimeMs;
 }

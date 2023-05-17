@@ -61,7 +61,7 @@ git clone https://github.com/My-Rolling-paper/Jwt_springSecurity_backend.git
 
 <!-- RESULTS -->
 ## Results
-ResponseEntity 반환값입니다. 
+**RequestBody, ResponseBody** 
 ### localhost:8080/signup
 
 <details>

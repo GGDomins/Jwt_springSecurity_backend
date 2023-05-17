@@ -1,133 +1,295 @@
-If you are not familiar with writing readme refer [this](https://guides.github.com/features/mastering-markdown/). 
-> Don't include this line in readme :smiley:   
 
-# Project Title  
-One Line description of project goes here  
+
+# Jwt_SpringSecurity_Backend
+JWT, springSecurity,redis..etc 를 공부하고 실습해보는 Repo입니다.
 
 
 <!-- TABLE OF CONTENTS -->
-## Table of Contents
+## 목차
 
 * [About the Project](#about-the-project)
   * [Tech Stack](#tech-stack)
   * [File Structure](#file-structure)
 * [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
   * [Installation](#installation)
-* [Usage](#usage)
-* [Results and Demo](#results-and-demo)
+* [Results](#results)
+* [Description](#description)
 * [Future Work](#future-work)
-* [Troubleshooting](#troubleshooting)
 * [Contributors](#contributors)
-* [Acknowledgements and Resources](#acknowledgements-and-resources)
 * [License](#license)
 
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-[![Product Name Screen Shot][product-screenshot]](https://example.com)  
-
-Aim and Description of project.  
-Refer this [documentation](https://link/to/report/)
+**API 명세서 및 블로그 작업중**
 
 ### Tech Stack
-This section should list the technologies you used for this project. Leave any add-ons/plugins for the prerequisite section. Here are a few examples.
-* [Coppeliasim](https://www.coppeliarobotics.com/)
-* [OpenCV](https://opencv.org/)
-* [ROS](https://www.ros.org/)  
+프로그램에서 사용하는 라이브러리 및 종속성 입니다. 
+* [Oauth2](https://oauth.net/2/)
+* [SpringSecurity](https://docs.spring.io/spring-security/reference/index.html)
+* [lombok](https://projectlombok.org/setup/)
+* [jwt](https://jwt.io/)
+* [redis](https://redis.io/) 
+* [servlet](https://www.ros.org/) 
+* [h2](https://www.h2database.com/html/main.html)
 
 ### File Structure
     .
-    ├── app.py                  # Explain the function preformed by this file in short
-    ├── docs                    # Documentation files (alternatively `doc`)
-    │   ├── report.pdf          # Project report
-    │   └── results             # Folder containing screenshots, gifs, videos of results
-    ├── src                     # Source files (alternatively `lib` or `app`)
-    ├── ...
-    ├── test                    # Test files (alternatively `spec` or `tests`)
-    │   ├── benchmarks          # Load and stress tests
-    │   ├── integration         # End-to-end, integration tests (alternatively `e2e`)
-    │   └── unit                # Unit tests
-    ├── ...
-    ├── tools                   # Tools and utilities
-    ├── LICENSE
-    ├── README.md 
-    ├── Setup.md                # If Installation instructions are lengthy
-    └── todo.md                 # If Future developments and current status gets lengthy
+    ├── .gradle                
+    ├── .idea                  
+    ├── . build                
+    ├── . build               
+    ├── . out                   
+    ├── . src                   
+    │   ├── main                
+    │   ├── test               
+    ├── .README.md             
+    ├── .build.gradle           
+    ├── .gradlew               
+    ├── .gradlew.bat         
+    └── .settings.gradle     
     
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-### Prerequisites
-
-* See [SETUP.md](https://link/to/setup.md) if there are plenty of instructions
-* List of softwares with version tested on 
-```sh
-How to install them
-```
-
-* **ESP-IDF v4.0 and above**
-
-  You can visit the [ESP-IDF Programmming Guide](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html#installation-step-by-step) for the installation steps.
-  
-* See if you can make requirements.txt  
-```sh
-pip install -r "requirements.txt"
-```
-
 ### Installation
 1. Clone the repo
-```sh
-git clone https://github.com/your_username_/Project-Name.git
+```
+git clone https://github.com/My-Rolling-paper/Jwt_springSecurity_backend.git
 ```
 
+<!-- RESULTS -->
+## Results
+ResponseEntity 반환값입니다. 
+### localhost:8080/signup
 
-<!-- USAGE EXAMPLES -->
-## Usage
+<details>
+    <summary> Success </summary>
+ 
+**RequestBody**
 ```
-How to run the driver code
+{
+    "email":"kevin0928@naver.com",
+    "name" : "kevin",
+    "password" : "1234"
+}
 ```
+**ResponseBody**
+```
+{
+    "code": 200,
+    "message": "회원 가입 성공",
+    "data": {
+        "id": 1,
+        "name": null,
+        "email": "kevin0928@naver.com",
+        "roles": [
+            "ROLE_USER"
+        ],
+        "enabled": true,
+        "password": "$2a$10$zedB.8n3nTeGDm/AOr6gUOw2y.29IbPM4QfteJHsosriKPJUwCMH2",
+        "username": "kevin0928@naver.com",
+        "authorities": [
+            {
+                "authority": "ROLE_USER"
+            }
+        ],
+        "accountNonExpired": true,
+        "credentialsNonExpired": true,
+        "accountNonLocked": true
+    }
+}
+```
+</details>
 
 
-<!-- RESULTS AND DEMO -->
-## Results and Demo
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space.  
-[**result screenshots**](https://result.png)  
-![**result gif or video**](https://result.gif)  
+<details>
+    <summary> Fail </summary>
+ 
+**RequestBody**
+```
+{
+    "email":"kevin0928@naver.com", -> 중복된 이메일 
+    "name" : "kevin",
+    "password" : "1234"
+}
+```
+**ResponseBody**
+```
+{
+    "code": 400,
+    "message": "이미 사용 중인 이메일입니다.",
+    "data": null
+}
+```
+</details>
 
-| Use  |  Table  |
-|:----:|:-------:| 
-| For  | Comparison|
+---
+### localhost:8080/login
 
+<details>
+    <summary> Success </summary>
+ 
+**RequestBody**
+```
+{
+    "email":"kevin0928@naver.com",
+    "password" : "1234"
+}
+```
+**ResponseBody**
+```
+{
+    "code": 200,
+    "message": "로그인 성공",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzA4OTQzLCJleHAiOjE2ODQzMTI1NDN9.j7kc9oXi87ET4yH9X2pmOhSwIMu391S3zmYE3e7T-qU"
+}
+```
+</details>
+
+
+<details>
+    <summary> Fail (Email-Error) </summary>
+ 
+**RequestBody**
+```
+{
+    "email":"kevin0928@nver.com", -> 틀린 이메일
+    "password" : "1234"
+}
+```
+**ResponseBody**
+```
+{
+    "code": 400,
+    "message": "이메일을 잘못 입력하셨습니다.",
+    "token": null
+}
+```
+</details>
+
+<details>
+    <summary> Fail (Password-Error) </summary>
+ 
+**RequestBody**
+```
+{
+    "email":"kevin0928@nver.com", 
+    "password" : "1234" -> 틀린 비밀번호 
+}
+```
+**ResponseBody**
+```
+{
+    "code": 400,
+    "message": "비밀번호를 잘못 입력하셨습니다.",
+    "token": null
+}
+```
+</details>
+
+---
+### localhost:8080/my-page
+
+<details>
+    <summary> Success </summary>
+ 
+**Authentication HttpServletRequest**
+**ResponseBody**
+```
+{
+    "code": 200,
+    "message": "회원 인증 성공",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzA4OTQzLCJleHAiOjE2ODQzMTI1NDN9.j7kc9oXi87ET4yH9X2pmOhSwIMu391S3zmYE3e7T-qU"
+}
+```
+</details>
+
+<details>
+    <summary> Fail </summary>
+ 
+**Non-authentication HttpServletRequest**
+**ResponseBody**
+```
+{
+    "code": 401,
+    "message": "회원 인증 실패",
+    "token": null
+}
+```
+</details>
+
+---
+### localhost:8080/refresh-token
+
+<details>
+    <summary> Success </summary>
+ 
+**member has a refresh token**
+**RequestBody**
+```
+{
+
+    "refreshToken":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzA5MzY5LCJleHAiOjE2ODQ1MjUzNjl9.g34oe9qIMlU-mA4Obosr2LioezBwoKXMc9OPhM00GpM"
+}
+```
+**ResponseBody**
+```
+{
+    "code": 200,
+    "message": "토큰 재발급 성공",
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzA5Mzg4LCJleHAiOjE2ODQzMTI5ODh9.oIM572DqIUTWY3FLWEs9OfRrQZqXExvO0aBu2CoiW7U",
+    "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzA5MzY5LCJleHAiOjE2ODQ1MjUzNjl9.g34oe9qIMlU-mA4Obosr2LioezBwoKXMc9OPhM00GpM"
+}
+```
+</details>
+
+<details>
+    <summary> Fail </summary>
+ 
+**Member does not have a refresh token**
+**RequestBody**
+```
+{
+
+    "refreshToken":""
+}
+```
+**ResponseBody**
+```
+{
+    "timestamp": "2023-05-17T07:47:39.382+00:00",
+    "status": 500,
+    "error": "Internal Server Error",
+    "path": "/refresh-token"
+}
+```
+</details>
+
+---
+<!-- Description -->
+## Description
+### 작업중
 
 <!-- FUTURE WORK -->
 ## Future Work
-* See [todo.md](https://todo.md) for seeing developments of this project
-- [x] Task 1
-- [x] Task 2
-- [ ] Task 3
-- [ ] Task 4
+* TDL
+- [x] Task 1 RefreshToken 구현
+- [x] Task 2 AccessToken을 RefreshToken로 재발급
+- [ ] Task 3 API 명세서
+- [ ] Task 4 프론트와 서버 통신
+- [ ] Task 5 Blog에 글 쓰기
 
-
-<!-- TROUBLESHOOTING -->
-## Troubleshooting
-* Common errors while configuring the project
 
 
 <!-- CONTRIBUTORS -->
 ## Contributors
-* [Member Name](https://github.com/id)
-* [Member Name](https://github.com/id)
+~~* [Member Name]~~
 
 
-<!-- ACKNOWLEDGEMENTS AND REFERENCES -->
-## Acknowledgements and Resources
-* [SRA VJTI](http://sra.vjti.info/) Eklavya 2020  
-* Refered [this](https://link) for achieving this  
-...
 
 
 <!-- LICENSE -->
 ## License
-Describe your [License](LICENSE) for your project. 
+License 작

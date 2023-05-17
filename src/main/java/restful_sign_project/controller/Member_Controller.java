@@ -6,7 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -115,17 +117,28 @@ public class Member_Controller {
         redisService.setValues(refreshToken, member.getEmail());
         log.info(token);
         log.info(refreshToken);
+        //HTTPONLY 쿠키에 RefreshToken 생성후 전달
+        ResponseCookie responseCookie =
+                ResponseCookie.from("refreshToken", refreshToken)
+                        .httpOnly(true)
+                        .secure(true)
+                        .path("/")
+                        .maxAge(3600000)
+                        .build();
 
         loginResponse = LoginResponse.builder()
                 .code(StatusCode.OK)
                 .message(ResponseMessage.LOGIN_SUCCESS)
                 .token(token)
+                .expireTimeMs(expireTimeMs)
                 .build();
-        return ResponseEntity.ok(loginResponse); // ok 안에 token을 포함한 데이터를 포함해 보냄.
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+                .body(loginResponse);
     }
 
     @GetMapping("/my-page") // AccessToken이 있다면 정상적으로 접근 가능
-    public ResponseEntity<PageResponse> myPage(HttpServletRequest request) {
+    public ResponseEntity<?> myPage(HttpServletRequest request) {
         // JWT 토큰 추출
         String token = jwtTokenProvider.resolveToken(request);
 

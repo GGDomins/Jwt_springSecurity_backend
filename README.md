@@ -32,6 +32,8 @@ JWT, springSecurity,redis..etc 를 공부하고 실습해보는 Repo입니다.
 * [redis](https://redis.io/) 
 * [servlet](https://www.ros.org/) 
 * [h2](https://www.h2database.com/html/main.html)
+* [HTTPONLY](https://developer.mozilla.org/ko/docs/Web/HTTP/Cookies)
+* [Cookie](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-web-cookies)
 
 ### File Structure
     .
@@ -140,6 +142,11 @@ git clone https://github.com/My-Rolling-paper/Jwt_springSecurity_backend.git
 }
 ```
 **ResponseBody**
+ ## header
+ ```
+refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzE4ODk2LCJleHAiOjE2ODQ1MzQ4OTZ9.9j4sQY7XtQgtm45gWbgpsHFxqTeKZAQVwTqpplbWhkA; Path=/; Max-Age=3600000; Expires=Wed, 28 Jun 2023 02:21:37 GMT; Secure; HttpOnly
+ ```
+ ## body
 ```
 {
     "code": 200,

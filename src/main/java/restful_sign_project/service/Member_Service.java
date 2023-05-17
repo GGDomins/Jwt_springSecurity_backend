@@ -31,6 +31,7 @@ public class Member_Service implements UserDetailsService {
         String bcry_password = passwordEncoder.encode(memberDto.getPassWord());
 //        memberDto.setPassWord(passwordEncoder.encode(memberDto.getPassWord()));
         Member member = Member.builder()
+                .name(memberDto.getName())
                 .email(memberDto.getEmail())
                 .passWord(bcry_password)
                 .roles(Collections.singletonList("ROLE_USER"))

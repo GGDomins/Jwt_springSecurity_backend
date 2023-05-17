@@ -151,7 +151,8 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 {
     "code": 200,
     "message": "로그인 성공",
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzA4OTQzLCJleHAiOjE2ODQzMTI1NDN9.j7kc9oXi87ET4yH9X2pmOhSwIMu391S3zmYE3e7T-qU"
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzIyODQ4LCJleHAiOjE2ODQzMjY0NDh9.sQoCaB-Mt8B0nuIs9ySVXax4y_LjPUmHgiuOUrnAJPc",
+    "expireTimeMs": 1684326448397 // 현재시간 + expiredTime(1시간)
 }
 ```
 </details>

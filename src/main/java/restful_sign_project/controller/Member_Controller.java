@@ -1,5 +1,6 @@
 package restful_sign_project.controller;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,9 @@ import restful_sign_project.entity.Member;
 import restful_sign_project.service.Member_Service;
 import restful_sign_project.service.RedisService;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @RestController("/api")
@@ -47,8 +51,8 @@ public class Member_Controller {
     @Value("${jwt.token.secret}")
     private String key;
 
-    private final Long expireTimeMs = 1000 * 60 * 60l;
-    private final Long RefreshExpireTimeMs = 1000 * 60 * 60 * 60l;
+    private final Long expireTimeMs = 1000 * 60 * 60L;
+    private final Long RefreshExpireTimeMs = 1000 * 60 * 60 * 60L;
 
     public Member_Controller(
             BCryptPasswordEncoder encoder,
@@ -112,6 +116,10 @@ public class Member_Controller {
                     .build();
             return new ResponseEntity<>(loginResponse, HttpStatus.BAD_REQUEST);
         }
+        long currentTimeMillis = System.currentTimeMillis();
+        Long expireTimesEND = expireTimeMs + currentTimeMillis; // Spring에서 현재시간에서 expireTimeMs가 더해진 시간을 MS단위로 보낸다
+        log.info(expireTimesEND.toString());
+
         String token = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), expireTimeMs); //AccessToken : tokenProvider을 통해서 인자로 이메일,역할,시간을 보낸다.
         String refreshToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), RefreshExpireTimeMs); //RefreshToken : tokenProvider을 통해서 인자로 이메일,역할,시간을 보낸다.
         redisService.setValues(refreshToken, member.getEmail());
@@ -130,7 +138,7 @@ public class Member_Controller {
                 .code(StatusCode.OK)
                 .message(ResponseMessage.LOGIN_SUCCESS)
                 .token(token)
-                .expireTimeMs(expireTimeMs)
+                .expireTimeMs(expireTimesEND)
                 .build();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, responseCookie.toString())

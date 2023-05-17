@@ -278,6 +278,7 @@ git clone https://github.com/My-Rolling-paper/Jwt_springSecurity_backend.git
 * TDL
 - [x] Task 1 RefreshToken 구현
 - [x] Task 2 AccessToken을 RefreshToken로 재발급
+- [ ] Task 4 Service - impl 분리
 - [ ] Task 3 API 명세서
 - [ ] Task 4 프론트와 서버 통신
 - [ ] Task 5 Blog에 글 쓰기

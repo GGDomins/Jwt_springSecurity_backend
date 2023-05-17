@@ -285,11 +285,11 @@ ResponseEntity 반환값입니다.
 
 <!-- CONTRIBUTORS -->
 ## Contributors
-~~* [Member Name]~~
+~~[Member Name]~~
 
 
 
 
 <!-- LICENSE -->
 ## License
-License 작
+License 작업중 

@@ -85,22 +85,22 @@ git clone https://github.com/My-Rolling-paper/Jwt_springSecurity_backend.git
     "message": "회원 가입 성공",
     "data": {
         "id": 1,
-        "name": null,
+        "name": "kevin",
         "email": "kevin0928@naver.com",
         "roles": [
             "ROLE_USER"
         ],
         "enabled": true,
-        "password": "$2a$10$zedB.8n3nTeGDm/AOr6gUOw2y.29IbPM4QfteJHsosriKPJUwCMH2",
+        "password": "$2a$10$ZDBOfnZBgF4CgAtL8bnEeONjc.WuXoCs86oPGN2SlB/Sa0FKLWFXK",
         "username": "kevin0928@naver.com",
         "authorities": [
             {
                 "authority": "ROLE_USER"
             }
         ],
+        "accountNonLocked": true,
         "accountNonExpired": true,
-        "credentialsNonExpired": true,
-        "accountNonLocked": true
+        "credentialsNonExpired": true
     }
 }
 ```

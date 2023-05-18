@@ -50,14 +50,10 @@ jobs:
       with:
         java-version: 11
 
-    - name: Setup H2
-      uses: samin/h2-action@v1
+    - name: Setup H2 database
+      uses: sbaudoin/setup-h2@v1
       with:
-        url: jdbc:h2:tcp://localhost/~/test;MODE=MySQL
-        username: sa
-        password:
-        driver-class-name: org.h2.Driver
-
+        version: 'latest'
 
     - name: Grant execute permission for gradlew
       run: chmod +x ./gradlew

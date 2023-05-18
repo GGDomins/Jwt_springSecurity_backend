@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Table(name = "RestFul_signup")
 public class Member implements UserDetails {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

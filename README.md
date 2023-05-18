@@ -24,7 +24,7 @@ JWT, springSecurity,redis..etc 를 공부하고 실습해보는 Repo입니다.
 **API 명세서 및 블로그 작업중**
 
 ### Tech Stack
-프로그램에서 사용하는 라이브러리 및 종속성 입니다. 
+프로그램에서 사용하는 라이브러리 및 종속성된 파일들입니다. 
 * [Oauth2](https://oauth.net/2/)
 * [SpringSecurity](https://docs.spring.io/spring-security/reference/index.html)
 * [lombok](https://projectlombok.org/setup/)

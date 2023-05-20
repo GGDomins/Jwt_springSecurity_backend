@@ -1,10 +1,9 @@
 spring:
   datasource:
-    url:  jdbc:postgres://ndsmfjzhfahjlo:f807cc002a66ea483748725ad9b2ce08b4e20e102880168f5ed8832bab74dd1b@ec2-3-232-103-50.compute-1.amazonaws.com:5432/d86vhq27rgfmmo
-    username: ndsmfjzhfahjlo
-    password: f807cc002a66ea483748725ad9b2ce08b4e20e102880168f5ed8832bab74dd1b
-    port: 5432
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/jwt_springsecurity?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: ghddydwns0928!!
 
   jpa:
     hibernate:

@@ -14,10 +14,10 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-bootJar{
-	destinationDirectory = file("./target")
+jar{
+	baseName = "heroku-api"
+	version = '0.0.1'
 }
-
 repositories {
 	mavenCentral()
 }

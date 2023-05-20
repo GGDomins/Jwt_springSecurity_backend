@@ -14,6 +14,9 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
+bootJar{
+	destinationDirectory = file("./target")
+}
 
 repositories {
 	mavenCentral()
@@ -26,7 +29,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.projectlombok:lombok'
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'

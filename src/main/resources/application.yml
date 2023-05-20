@@ -28,7 +28,7 @@ server:
   address:
   compression:
     enabled: true
-#  port: 1234
+  port: 8080
 jwt:
   token:
     secret: "missyouannawhereareyou"

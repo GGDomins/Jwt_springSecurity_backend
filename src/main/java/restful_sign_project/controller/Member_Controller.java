@@ -66,6 +66,7 @@ public class Member_Controller {
     /**
      * JSON형식으로 입력을 받으며 STRING : STRING 형식으로 입력을 받기 때문에 Map함수를 사용함.
      */
+    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/signup")
     public ResponseEntity<SignInResponse> signup(@RequestBody Map<String, String> memberDto) {
         SignInResponse response = new SignInResponse();
@@ -88,6 +89,7 @@ public class Member_Controller {
     }
 
     // 로그인
+    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody Map<String, String> user) { //로그인도 회원가입과 마찬가지로 map함수를 사용해서 받음
         LoginResponse loginResponse = new LoginResponse();
@@ -140,6 +142,7 @@ public class Member_Controller {
                 .body(loginResponse);
     }
 
+    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/refresh-token")
     public ResponseEntity<RefreshTokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         // 요청에서 refresh token 값을 추출
@@ -163,6 +166,7 @@ public class Member_Controller {
         return ResponseEntity.ok(response);
     }
 
+    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @GetMapping("/my-page") // AccessToken이 있다면 정상적으로 접근 가능
     public ResponseEntity<?> myPage(HttpServletRequest request) {
         // JWT 토큰 추출
@@ -171,6 +175,7 @@ public class Member_Controller {
         return result;
     }
 
+    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @GetMapping("/my-page2")
     @PreAuthorize("hasRole('ROLE_USER')") // ROLE_USER가 아니면 403에러가 일어난다.
     public ResponseEntity<PageResponse> myPage() {
@@ -185,6 +190,7 @@ public class Member_Controller {
         return new ResponseEntity<>(pageResponse, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @GetMapping("/PasswordChange") // AccessToken이 있다면 정상적으로 접근 가능
     public ResponseEntity<?> passWordChange(HttpServletRequest request) {
         String token = jwtTokenProvider.resolveToken(request);

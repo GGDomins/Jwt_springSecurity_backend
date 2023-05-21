@@ -12,15 +12,5 @@ public class RestfulSignProjectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RestfulSignProjectApplication.class, args);
 	}
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("https://restful-jwt-project.herokuapp.com/");
-			}
-		};
-	}
-
 }
 

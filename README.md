@@ -31,7 +31,7 @@ JWT, springSecurity,redis..etc 를 공부하고 실습해보는 Repo입니다.
 * [jwt](https://jwt.io/)
 * [redis](https://redis.io/) 
 * [servlet](https://www.ros.org/) 
-* [h2](https://www.h2database.com/html/main.html)
+* [mySql](https://www.mysql.com/)
 * [HTTPONLY](https://developer.mozilla.org/ko/docs/Web/HTTP/Cookies)
 * [Cookie](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-web-cookies)
 

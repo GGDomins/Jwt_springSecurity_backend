@@ -11,6 +11,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedMethods(ALLOWED_METHOD_NAMES.split(","));
+                .allowedOrigins("https://restful-jwt-project.herokuapp.com");
     }
 }

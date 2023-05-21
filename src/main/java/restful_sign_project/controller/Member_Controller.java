@@ -9,10 +9,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +22,7 @@ import restful_sign_project.controller.status.ResponseMessage;
 import restful_sign_project.controller.status.StatusCode;
 import restful_sign_project.dto.Member_Dto;
 import restful_sign_project.entity.Member;
+import restful_sign_project.repository.Member_Repository;
 import restful_sign_project.service.Member_Service;
 import restful_sign_project.service.PageService;
 import restful_sign_project.service.RedisService;
@@ -43,6 +42,7 @@ public class Member_Controller {
     private final RedisService redisService;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
     private final PageService pageService;
+    private final Member_Repository memberRepository;
     @Value("${jwt.token.secret}")
     private String key;
 
@@ -55,13 +55,15 @@ public class Member_Controller {
             JwtTokenProvider jwtTokenProvider,
             RedisService redisService,
             RefreshTokenRedisRepository refreshTokenRedisRepository,
-            PageService pageService) {
+            PageService pageService,
+            Member_Repository memberRepository) {
         this.encoder = encoder;
         this.memberService = memberService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.redisService = redisService;
         this.refreshTokenRedisRepository = refreshTokenRedisRepository;
         this.pageService = pageService;
+        this.memberRepository = memberRepository;
     }
     //회원가입
 
@@ -85,7 +87,7 @@ public class Member_Controller {
                     .data(member)
                     .build();
             return ResponseEntity.ok(response); // 성공하면 OK안에 response를 담아서 return 함.
-        };
+        }
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); //실패하면 BAD_REQUEST와 함께 response를 보냄
     }
 
@@ -165,27 +167,6 @@ public class Member_Controller {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/my-page") // AccessToken이 있다면 정상적으로 접근 가능
-    public ResponseEntity<?> myPage(HttpServletRequest request) {
-        // JWT 토큰 추출
-        String token = jwtTokenProvider.resolveToken(request);
-        ResponseEntity<?> result = pageService.findPageByToken(token);
-        return result;
-    }
-
-    @GetMapping("/my-page2")
-    @PreAuthorize("hasRole('ROLE_USER')") // ROLE_USER가 아니면 403에러가 일어난다.
-    public ResponseEntity<PageResponse> myPage() {
-        // 페이지 응답 객체 생성
-        PageResponse pageResponse = PageResponse.builder()
-                .code(StatusCode.OK)
-                .message(ResponseMessage.AUTHORIZED)
-                .token(null)
-                .build();
-
-        // 인증된 사용자만 접근 가능한 페이지
-        return new ResponseEntity<>(pageResponse, HttpStatus.OK);
-    }
 
     @GetMapping("/PasswordChange") // AccessToken이 있다면 정상적으로 접근 가능
     public ResponseEntity<?> passWordChange(HttpServletRequest request) {
@@ -194,6 +175,36 @@ public class Member_Controller {
         return result;
     }
 
-//    @PostMapping("/passwordChange")
-//    public ResponseEntity<?> passWordChange()
+    @PostMapping("/passwordChange/{id}")
+    public ResponseEntity<?> passWordChange(@PathVariable Long id, @RequestBody Map<String, String> password) {
+        String currentPassword = password.get("currentPassword");
+        String newPassWord = password.get("newPassword");
+        PasswordChangeResponse passwordChangeResponse = new PasswordChangeResponse();
+        // ID를 기반으로 데이터베이스에서 해당 멤버를 조회합니다.
+        Optional<Member> op_member = memberRepository.findMemberById(id);
+        Member member = op_member.get();
+        if (!currentPassword.equals(newPassWord)) {
+            if (encoder.matches(currentPassword, member.getPassword())) {
+                log.info("비밀번호 똑같아요!!");
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                String bcry_password = passwordEncoder.encode(newPassWord);
+                member.setPassWord(bcry_password);
+
+                memberRepository.save(member);
+                passwordChangeResponse = PasswordChangeResponse.builder()
+                        .code(StatusCode.OK)
+                        .message(ResponseMessage.PASSWORD_CHANGE_OK)
+                        .data(newPassWord)
+                        .build();
+                return ResponseEntity.ok(passwordChangeResponse);
+            } else {
+                log.info(member.getName());
+                return new ResponseEntity<>(passwordChangeResponse, HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            passwordChangeResponse.setMessage("비밀번호를 다르게 입력하세요");
+            return new ResponseEntity<>(passwordChangeResponse, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

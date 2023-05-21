@@ -34,4 +34,11 @@ public class Member_Repository {
         return result.stream().findFirst();
     }
 
+    public Optional<Member> findMemberById(Long id) {
+        List<Member> result = em.createQuery("select m from Member  m where m.id =:id", Member.class)
+                .setParameter("id", id)
+                .getResultList();
+        return result.stream().findFirst();
+    }
+
 }

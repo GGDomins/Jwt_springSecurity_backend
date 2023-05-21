@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PutMapping;
 import restful_sign_project.JWT.JwtTokenProvider;
 import restful_sign_project.dto.Member_Dto;
 import restful_sign_project.entity.Member;

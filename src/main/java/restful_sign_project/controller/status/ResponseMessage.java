@@ -15,4 +15,5 @@ public class ResponseMessage {
     public static final String PASSWORD_ERROR = "비밀번호를 잘못 입력하셨습니다.";
     public static final String REFRESH_TOKEN_SUCCESS = "토큰 재발급 성공";
     public static final String REFRESH_TOKEN_FAIL = "토큰 재발급 실패";
+    public static final String PASSWORD_CHANGE_OK = "비밀번호 변경 완료";
 }

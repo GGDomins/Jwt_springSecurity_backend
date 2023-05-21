@@ -354,7 +354,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 - [x] Task 2 AccessToken을 RefreshToken로 재발급
 - [ ] Task 4 Service - impl 분리
 - [ ] Task 3 API 명세서
-- [ ] Task 4 프론트와 서버 통신
+- [x] Task 4 프론트와 서버 통신
 - [ ] Task 5 Blog에 글 쓰기
 
 

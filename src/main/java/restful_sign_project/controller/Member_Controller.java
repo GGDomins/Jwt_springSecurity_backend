@@ -85,7 +85,7 @@ public class Member_Controller {
                     .data(member)
                     .build();
             return ResponseEntity.ok(response); // 성공하면 OK안에 response를 담아서 return 함.
-        }
+        };
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); //실패하면 BAD_REQUEST와 함께 response를 보냄
     }
 

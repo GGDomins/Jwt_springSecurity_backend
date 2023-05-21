@@ -11,8 +11,9 @@ spring:
     generate-ddl: true
     show-sql: true
   redis:
-    port: 6379
-    host: localhost
+    port: 9290
+    host: ec2-54-144-1-186.compute-1.amazonaws.com
+    password: pcc357c1933fabf78d81098c425b999b1c79d5b81181f8e4fd0fc6e778182d266
 logging:
   level:
     org.hibernate.sql: debug # hibernate가 생성하는 모든 sql이 log로 보인다.

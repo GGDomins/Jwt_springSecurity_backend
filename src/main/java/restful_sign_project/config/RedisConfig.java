@@ -15,6 +15,7 @@ public class RedisConfig {
 
     @Value("${spring.redis.port}") // yml에 port 정의
     private int redisPort;
+    @Value("${spring.redis.password}")
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {

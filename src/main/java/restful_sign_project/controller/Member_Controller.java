@@ -1,11 +1,9 @@
 package restful_sign_project.controller;
 
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,12 +14,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import restful_sign_project.JWT.JwtTokenProvider;
 import restful_sign_project.JWT.refresh.RefreshTokenRedisRepository;
 import restful_sign_project.controller.Request.RefreshTokenRequest;
@@ -31,23 +25,22 @@ import restful_sign_project.controller.status.StatusCode;
 import restful_sign_project.dto.Member_Dto;
 import restful_sign_project.entity.Member;
 import restful_sign_project.service.Member_Service;
+import restful_sign_project.service.PageService;
 import restful_sign_project.service.RedisService;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.*;
 
 @RestController("/api")
 @Slf4j
 @Transactional
-@EnableGlobalMethodSecurity(prePostEnabled=true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class Member_Controller {
     private final BCryptPasswordEncoder encoder;
     private final Member_Service memberService;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+    private final PageService pageService;
     @Value("${jwt.token.secret}")
     private String key;
 
@@ -59,12 +52,14 @@ public class Member_Controller {
             Member_Service memberService,
             JwtTokenProvider jwtTokenProvider,
             RedisService redisService,
-            RefreshTokenRedisRepository refreshTokenRedisRepository) {
+            RefreshTokenRedisRepository refreshTokenRedisRepository,
+            PageService pageService) {
         this.encoder = encoder;
         this.memberService = memberService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.redisService = redisService;
         this.refreshTokenRedisRepository = refreshTokenRedisRepository;
+        this.pageService = pageService;
     }
     //회원가입
 
@@ -145,60 +140,6 @@ public class Member_Controller {
                 .body(loginResponse);
     }
 
-    @GetMapping("/my-page") // AccessToken이 있다면 정상적으로 접근 가능
-    public ResponseEntity<?> myPage(HttpServletRequest request) {
-        // JWT 토큰 추출
-        String token = jwtTokenProvider.resolveToken(request);
-
-        // JWT 토큰 유효성 검증
-        if (jwtTokenProvider.validateToken(token)) {
-            // JWT 토큰으로부터 인증 정보 추출
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-
-            // Spring Security Context에 인증 정보 저장
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            // 로그 출력
-            log.info("토큰 있다구!!!");
-
-            // PageResponse 객체 생성 및 반환
-            PageResponse pageResponse = PageResponse.builder()
-                    .code(StatusCode.OK)
-                    .message(ResponseMessage.AUTHORIZED)
-                    .token(token)
-                    .build();
-
-            // 인증된 사용자만 접근 가능한 페이지
-            return ResponseEntity.ok(pageResponse);
-        } else {
-            // 로그 출력
-            log.info("토큰 없다구!!!");
-
-            // PageResponse 객체 생성 및 반환
-            PageResponse pageResponse = PageResponse.builder()
-                    .code(StatusCode.UNAUTHORIZED)
-                    .message(ResponseMessage.UNAUTHORIZED)
-                    .build();
-
-            // 인증되지 않은 사용자에게는 400 Bad Request 반환
-            return new ResponseEntity<>(pageResponse, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/my-page2")
-    @PreAuthorize("hasRole('ROLE_USER')") // ROLE_USER가 아니면 403에러가 일어난다.
-    public ResponseEntity<PageResponse> myPage() {
-        // 페이지 응답 객체 생성
-        PageResponse pageResponse = PageResponse.builder()
-                .code(StatusCode.OK)
-                .message(ResponseMessage.AUTHORIZED)
-                .token(null)
-                .build();
-
-        // 인증된 사용자만 접근 가능한 페이지
-        return new ResponseEntity<>(pageResponse, HttpStatus.OK);
-    }
-
     @PostMapping("/refresh-token")
     public ResponseEntity<RefreshTokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         // 요청에서 refresh token 값을 추출
@@ -221,4 +162,36 @@ public class Member_Controller {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/my-page") // AccessToken이 있다면 정상적으로 접근 가능
+    public ResponseEntity<?> myPage(HttpServletRequest request) {
+        // JWT 토큰 추출
+        String token = jwtTokenProvider.resolveToken(request);
+        ResponseEntity<?> result = pageService.findPageByToken(token);
+        return result;
+    }
+
+    @GetMapping("/my-page2")
+    @PreAuthorize("hasRole('ROLE_USER')") // ROLE_USER가 아니면 403에러가 일어난다.
+    public ResponseEntity<PageResponse> myPage() {
+        // 페이지 응답 객체 생성
+        PageResponse pageResponse = PageResponse.builder()
+                .code(StatusCode.OK)
+                .message(ResponseMessage.AUTHORIZED)
+                .token(null)
+                .build();
+
+        // 인증된 사용자만 접근 가능한 페이지
+        return new ResponseEntity<>(pageResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/PasswordChange") // AccessToken이 있다면 정상적으로 접근 가능
+    public ResponseEntity<?> passWordChange(HttpServletRequest request) {
+        String token = jwtTokenProvider.resolveToken(request);
+        ResponseEntity<?> result = pageService.findPageByToken(token);
+        return result;
+    }
+
+//    @PostMapping("/passwordChange")
+//    public ResponseEntity<?> passWordChange()
 }

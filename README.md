@@ -205,6 +205,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
     <summary> Success </summary>
  
 **Authentication HttpServletRequest**
+
 **ResponseBody**
 ```
 {
@@ -219,6 +220,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
     <summary> Fail </summary>
  
 **Non-authentication HttpServletRequest**
+
 **ResponseBody**
 ```
 {
@@ -236,6 +238,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
     <summary> Success </summary>
  
 **member has a refresh token**
+
 **RequestBody**
 ```
 {
@@ -258,6 +261,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
     <summary> Fail </summary>
  
 **Member does not have a refresh token**
+
 **RequestBody**
 ```
 {
@@ -272,6 +276,68 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
     "status": 500,
     "error": "Internal Server Error",
     "path": "/refresh-token"
+}
+```
+</details>
+
+### localhost:8080/passwordChange/{id}
+
+<details>
+    <summary> Success </summary>
+
+**RequestBody**
+```
+{
+    "currentPassword" : "124",
+    "newPassword" : "1234"
+}
+```
+**ResponseBody**
+```
+{
+    "code": 200,
+    "message": "비밀번호 변경 완료",
+    "data": "124"
+}
+```
+</details>
+
+<details>
+    <summary> Fail </summary>
+
+
+**Wrong Password**
+
+**RequestBody**
+```
+{
+    "currentPassword" : "123", -> 틀린 비밀번호
+    "newPassword" : "1234"
+}
+```
+**ResponseBody**
+```
+{
+    "code": 600,
+    "message": "비밀번호를 잘못 입력하셨습니다.",
+    "data": null
+}
+```
+
+**Enter the same password twice**
+
+**RequestBody**
+```
+{
+    "email":"kevin0928@nver.com", -> 틀린 이메일
+    "password" : "1234"
+}
+```
+**ResponseBody**
+```
+{
+    "currentPassword" : "1234", // 똑같은 비밀번호
+    "newPassword" : "1234"
 }
 ```
 </details>

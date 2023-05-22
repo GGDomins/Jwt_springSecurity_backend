@@ -167,7 +167,7 @@ public class Member_Controller {
                 .build();
 
         return ResponseEntity.ok().
-                header("newAccessToken", newAccessToken)
+                header("accessToken", newAccessToken)
                 .header("expireTime", String.valueOf(expireTimesEND))
                 .body(response);
     }

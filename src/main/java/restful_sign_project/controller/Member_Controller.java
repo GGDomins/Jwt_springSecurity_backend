@@ -46,7 +46,7 @@ public class Member_Controller {
     @Value("${jwt.token.secret}")
     private String key;
 
-    private final Long expireTimeMs = 100L;
+    private final Long expireTimeMs = 30000L;
     private final Long RefreshExpireTimeMs = 1000 * 60 * 60 * 60L;
 
     public Member_Controller(

@@ -136,11 +136,13 @@ public class Member_Controller {
         loginResponse = LoginResponse.builder()
                 .code(StatusCode.OK)
                 .message(ResponseMessage.LOGIN_SUCCESS)
-                .token(token)
+                .token(null)
                 .expireTimeMs(expireTimesEND)
                 .build();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+                .header("accessToken", token)
+                .header("expireTime", String.valueOf(expireTimesEND))
                 .body(loginResponse);
     }
 
@@ -160,11 +162,14 @@ public class Member_Controller {
         RefreshTokenResponse response = RefreshTokenResponse.builder()
                 .code(StatusCode.OK)
                 .message(ResponseMessage.REFRESH_TOKEN_SUCCESS)
-                .token(newAccessToken)
+                .token(null)
                 .expireTimeMs(expireTimesEND)
                 .build();
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().
+                header("newAccessToken", newAccessToken)
+                .header("expireTime", String.valueOf(expireTimesEND))
+                .body(response);
     }
 
 

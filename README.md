@@ -31,7 +31,7 @@ JWT, springSecurity,redis..etc 를 공부하고 실습해보는 Repo입니다.
 * [jwt](https://jwt.io/)
 * [redis](https://redis.io/) 
 * [servlet](https://www.ros.org/) 
-* [h2](https://www.h2database.com/html/main.html)
+* [mySql](https://www.mysql.com/)
 * [HTTPONLY](https://developer.mozilla.org/ko/docs/Web/HTTP/Cookies)
 * [Cookie](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-web-cookies)
 
@@ -354,7 +354,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 - [x] Task 2 AccessToken을 RefreshToken로 재발급
 - [ ] Task 4 Service - impl 분리
 - [ ] Task 3 API 명세서
-- [ ] Task 4 프론트와 서버 통신
+- [x] Task 4 프론트와 서버 통신
 - [ ] Task 5 Blog에 글 쓰기
 
 

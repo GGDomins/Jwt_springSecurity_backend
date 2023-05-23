@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/springsecurity?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: root
+    password: ghddydwns0928!!
+
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+    show-sql: true
+  redis:
+    port: 9289
+    host: ec2-54-144-1-186.compute-1.amazonaws.com
+    password: pcc357c1933fabf78d81098c425b999b1c79d5b81181f8e4fd0fc6e778182d266
+logging:
+  level:
+    org.hibernate.sql: debug # hibernate가 생성하는 모든 sql이 log로 보인다.
+    #    org.hibernate.type: trace  # p6spy를 사용하면 굳이 사용할 필요가 없다.
+server:
+  address:
+  compression:
+    enabled: true
+  port: ${port:8080}
+jwt:
+  token:
+    secret: "missyouannawhereareyou"
+
+

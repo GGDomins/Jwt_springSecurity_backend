@@ -280,6 +280,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 ```
 </details>
 
+---
 ### localhost:8080/passwordChange/{id}
 
 <details>
@@ -357,6 +358,8 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 - [x] Task 4 프론트와 서버 통신
 - [ ] Task 5 Blog에 글 쓰기
 
+* NotionLink
+   * [Notion](https://shining-fish-553.notion.site/Checklist-to-finish-off-5b5197d4b9e140058c6e4b84df71af78)
 
 
 <!-- CONTRIBUTORS -->

@@ -32,9 +32,10 @@ public class PageService {
             PageResponse pageResponse = PageResponse.builder()
                     .code(StatusCode.OK)
                     .message(ResponseMessage.AUTHORIZED)
-                    .token(token)
                     .build();
-            return ResponseEntity.ok(pageResponse);
+            return ResponseEntity.ok()
+                    .header("accessToken",token)
+                    .body(pageResponse);
         } else {
             PageResponse pageResponse = PageResponse.builder()
                     .code(StatusCode.UNAUTHORIZED)

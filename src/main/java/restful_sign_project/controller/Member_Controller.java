@@ -98,9 +98,8 @@ public class Member_Controller {
         Optional<Member> member1 = memberService.findMemberByEmail(user.get("email")); //memberService를 이용해서 email로 Member를 찾음
         if (!member1.isPresent()) { //email로 찾았는데 member가 없는 경우
             loginResponse = LoginResponse.builder()
-                    .code(StatusCode.BAD_REQUEST)
+                    .code(StatusCode.UNAUTHORIZED)
                     .message(ResponseMessage.EMAIL_NOT_FOUND)
-                    .token(null)
                     .build();
             return new ResponseEntity<>(loginResponse, HttpStatus.BAD_REQUEST);
         }
@@ -109,9 +108,8 @@ public class Member_Controller {
         log.info(user.get("password"));
         if (!encoder.matches(user.get("password"), member.getPassword())) { //
             loginResponse = LoginResponse.builder()
-                    .code(StatusCode.BAD_REQUEST)
+                    .code(StatusCode.FORBIDDEN)
                     .message(ResponseMessage.PASSWORD_ERROR)
-                    .token(null)
                     .build();
             return new ResponseEntity<>(loginResponse, HttpStatus.BAD_REQUEST);
         }
@@ -136,8 +134,6 @@ public class Member_Controller {
         loginResponse = LoginResponse.builder()
                 .code(StatusCode.OK)
                 .message(ResponseMessage.LOGIN_SUCCESS)
-                .token(null)
-                .expireTimeMs(expireTimesEND)
                 .build();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
@@ -162,7 +158,6 @@ public class Member_Controller {
         RefreshTokenResponse response = RefreshTokenResponse.builder()
                 .code(StatusCode.OK)
                 .message(ResponseMessage.REFRESH_TOKEN_SUCCESS)
-                .token(null)
                 .expireTimeMs(expireTimesEND)
                 .build();
 
@@ -199,7 +194,6 @@ public class Member_Controller {
                 passwordChangeResponse = PasswordChangeResponse.builder()
                         .code(StatusCode.OK)
                         .message(ResponseMessage.PASSWORD_CHANGE_OK)
-                        .data(newPassWord)
                         .build();
                 return ResponseEntity.ok(passwordChangeResponse);
             } else {

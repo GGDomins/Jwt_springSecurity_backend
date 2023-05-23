@@ -15,7 +15,7 @@ public class  SignInResponse {
     private Object data;
 
     public SignInResponse(){
-        this.code = StatusCode.BAD_REQUEST;
+        this.code = StatusCode.DATA_CONFLICT;
         this.message = ResponseMessage.EMAIL_EXISTED;
         this.data = null;
     }

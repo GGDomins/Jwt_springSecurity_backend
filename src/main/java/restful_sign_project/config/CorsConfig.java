@@ -13,6 +13,7 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins("https://restful-jwt-project.herokuapp.com")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
+                .exposedHeaders("accessToken", "expireTime")  // 클라이언트가 accessToken과 expireTime에 접근할 수 있도록 한다.
                 .allowCredentials(true);
     }
 }

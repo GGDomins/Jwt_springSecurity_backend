@@ -128,6 +128,7 @@ public class Member_Controller {
         //HTTPONLY 쿠키에 RefreshToken 생성후 전달
         ResponseCookie responseCookie =
                 ResponseCookie.from("refreshToken", refreshToken)
+                        .domain("https://restful-jwt-project.herokuapp.com/")
                         .httpOnly(true)
                         .secure(true)
                         .sameSite("None")

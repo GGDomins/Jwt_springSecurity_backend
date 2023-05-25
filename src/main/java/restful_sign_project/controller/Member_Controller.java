@@ -1,5 +1,6 @@
 package restful_sign_project.controller;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,8 @@ import restful_sign_project.service.PageService;
 import restful_sign_project.service.RedisService;
 
 import java.util.*;
+
+import static io.lettuce.core.GeoArgs.Sort.none;
 
 @RestController("/api")
 @Slf4j
@@ -127,6 +130,7 @@ public class Member_Controller {
                 ResponseCookie.from("refreshToken", refreshToken)
                         .httpOnly(true)
                         .secure(true)
+                        .sameSite("None")
                         .path("/")
                         .maxAge(3600000)
                         .build();

@@ -4,6 +4,22 @@ spring:
     url: jdbc:mysql://localhost:3306/springsecurity?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: root
     password: ghddydwns0928!!
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: kevin0928@naver.com
+    password: ghddydwns0928!!
+    properties:
+      debug: true
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+            trust: smtp.naver.com
+      smtp:
+        starttls:
+          enable: true
 
 
   jpa:
@@ -19,11 +35,11 @@ logging:
   level:
     org.hibernate.sql: debug # hibernate가 생성하는 모든 sql이 log로 보인다.
     #    org.hibernate.type: trace  # p6spy를 사용하면 굳이 사용할 필요가 없다.
-server:
-  address:
-  compression:
-    enabled: true
-  port: ${port:8080}
+#server:
+#  address:
+#  compression:
+#    enabled: true
+#  port: ${port:8080}
 jwt:
   token:
     secret: "missyouannawhereareyou"

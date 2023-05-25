@@ -21,6 +21,7 @@ import java.util.Optional;
 public class PageService {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final Long expireTimeMs = 30000L;
     public PageService(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }

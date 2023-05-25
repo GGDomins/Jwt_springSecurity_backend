@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import restful_sign_project.controller.Response.TokenResponse;
 import restful_sign_project.repository.Member_Repository;
 import restful_sign_project.service.RedisService;
 
@@ -86,8 +88,9 @@ public class JwtTokenProvider {
             return false;
         }
     }
-    public String refreshToken(String refreshToken) {
+    public TokenResponse refreshToken(String refreshToken) {
         Long tokenValidTime = 1000 * 60 * 60l;
+        Long RefreshExpireTimeMs = 1000 * 60 * 60 * 60L;
         // Check if the refresh token exists in Redis
         if (redisService.exists(refreshToken)) {
             // Get the email associated with the refresh token from Redis
@@ -98,9 +101,15 @@ public class JwtTokenProvider {
 
             // Generate a new access token
             String newAccessToken = createToken(userDetails.getUsername(), getRolesFromUserDetails(userDetails), tokenValidTime);
+            String newRefreshToken = createToken(userDetails.getUsername(), getRolesFromUserDetails(userDetails), RefreshExpireTimeMs);
 
-            // Update the access token in the response
-            return newAccessToken;
+            TokenResponse tokenResponse = TokenResponse.builder()
+                    .RefreshToken(newRefreshToken)
+                    .AccessToken(newAccessToken)
+                    .build();
+            redisService.setValues(newRefreshToken, email);
+            redisService.delValues("Bearer " + refreshToken);
+            return tokenResponse;
         } else {
             throw new IllegalStateException("Invalid refresh token");
         }

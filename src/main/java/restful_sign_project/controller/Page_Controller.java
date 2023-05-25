@@ -29,6 +29,7 @@ public class Page_Controller {
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
     private final PageService pageService;
 
+
     public Page_Controller(
             BCryptPasswordEncoder encoder,
             Member_Service memberService,

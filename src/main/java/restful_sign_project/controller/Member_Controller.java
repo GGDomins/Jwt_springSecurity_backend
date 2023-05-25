@@ -49,7 +49,7 @@ public class Member_Controller {
     @Value("${jwt.token.secret}")
     private String key;
 
-    private final Long expireTimeMs = 30000L;
+    private final Long expireTimeMs = 1000 * 60 * 60l;
     private final Long RefreshExpireTimeMs = 1000 * 60 * 60 * 60L;
 
     public Member_Controller(
@@ -153,7 +153,7 @@ public class Member_Controller {
         String refreshToken = refreshTokenRequest.getRefreshToken();
 
         // Access Token 갱신
-        String newAccessToken = jwtTokenProvider.refreshToken(refreshToken);
+        TokenResponse token = jwtTokenProvider.refreshToken(refreshToken);
 
         long currentTimeMillis = System.currentTimeMillis();
         Long expireTimesEND = expireTimeMs + currentTimeMillis; // Spring에서 현재시간에서 expireTimeMs가 더해진 시간을 MS단위로 보낸다
@@ -163,11 +163,22 @@ public class Member_Controller {
         RefreshTokenResponse response = RefreshTokenResponse.builder()
                 .code(StatusCode.OK)
                 .message(ResponseMessage.REFRESH_TOKEN_SUCCESS)
-                .expireTimeMs(expireTimesEND)
                 .build();
 
+        //HTTPONLY 쿠키에 RefreshToken 생성후 전달
+        ResponseCookie responseCookie =
+                ResponseCookie.from("refreshToken", token.getRefreshToken())
+//                        .domain("restful-jwt-project.herokuapp.com")
+                        .httpOnly(true)
+                        .secure(true)
+                        .sameSite("None")
+                        .path("/")
+                        .maxAge(3600000)
+                        .build();
+
         return ResponseEntity.ok().
-                header("accessToken", newAccessToken)
+                header(HttpHeaders.SET_COOKIE,responseCookie.toString())
+                .header("accessToken",token.getAccessToken())
                 .header("expireTime", String.valueOf(expireTimesEND))
                 .body(response);
     }
@@ -210,5 +221,6 @@ public class Member_Controller {
             return new ResponseEntity<>(passwordChangeResponse, HttpStatus.BAD_REQUEST);
         }
     }
+
 
 }

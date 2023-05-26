@@ -13,17 +13,23 @@ public class PageResponse {
     private int code;
     private String message;
     private Object token;
+    private String name;
+    private String email;
 
     public PageResponse() {
         this.code = StatusCode.UNAUTHORIZED;
         this.message = ResponseMessage.UNAUTHORIZED;
         this.token = null;
+        this.name = null;
+        this.email = null;
     }
 
     @Builder
-    public PageResponse(int code, String message, Object token) {
+    public PageResponse(int code, String message, Object token,String name, String email) {
         this.code = code;
         this.message = message;
         this.token = token;
+        this.name = name;
+        this.email = email;
     }
 }

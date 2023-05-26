@@ -28,7 +28,7 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String id;
 
-    public MimeMessage createMessage(String to)throws MessagingException, UnsupportedEncodingException {
+    public MimeMessage createMessage(String to) throws MessagingException, UnsupportedEncodingException {
         log.info("보내는 대상 : "+ to);
         log.info("인증 번호 : " + ePw);
         MimeMessage  message = javaMailSender.createMimeMessage();

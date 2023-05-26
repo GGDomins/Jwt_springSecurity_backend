@@ -5,21 +5,14 @@ spring:
     username: root
     password: ghddydwns0928!!
   mail:
-    host: smtp.naver.com
+    host: smtp.gmail.com
     port: 587
-    username: kevin0928@naver.com
-    password: ghddydwns0928!!
+    username: kevin09288715
+    password: wmvlrabtmsdenjeb
     properties:
-      debug: true
       mail:
         smtp:
           auth: true
-          ssl:
-            enable: true
-            trust: smtp.naver.com
-      smtp:
-        starttls:
-          enable: true
 
 
   jpa:

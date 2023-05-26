@@ -1,11 +1,6 @@
 package restful_sign_project.controller;
 
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.nimbusds.oauth2.sdk.http.HTTPRequest;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -13,26 +8,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import restful_sign_project.JWT.JwtTokenProvider;
 import restful_sign_project.JWT.refresh.RefreshTokenRedisRepository;
-import restful_sign_project.controller.Request.RefreshTokenRequest;
 import restful_sign_project.controller.Response.*;
 import restful_sign_project.controller.status.ResponseMessage;
 import restful_sign_project.controller.status.StatusCode;
 import restful_sign_project.dto.Member_Dto;
 import restful_sign_project.entity.Member;
 import restful_sign_project.repository.Member_Repository;
+import restful_sign_project.service.EmailService;
 import restful_sign_project.service.Member_Service;
 import restful_sign_project.service.PageService;
 import restful_sign_project.service.RedisService;
 
 import java.util.*;
-
-import static io.lettuce.core.GeoArgs.Sort.none;
 
 @RestController("/api")
 @Slf4j
@@ -48,6 +40,7 @@ public class Member_Controller {
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
     private final PageService pageService;
     private final Member_Repository memberRepository;
+    private final EmailService emailService;
     @Value("${jwt.token.secret}")
     private String key;
 
@@ -61,7 +54,7 @@ public class Member_Controller {
             RedisService redisService,
             RefreshTokenRedisRepository refreshTokenRedisRepository,
             PageService pageService,
-            Member_Repository memberRepository) {
+            Member_Repository memberRepository, EmailService emailService) {
         this.encoder = encoder;
         this.memberService = memberService;
         this.jwtTokenProvider = jwtTokenProvider;
@@ -69,6 +62,7 @@ public class Member_Controller {
         this.refreshTokenRedisRepository = refreshTokenRedisRepository;
         this.pageService = pageService;
         this.memberRepository = memberRepository;
+        this.emailService = emailService;
     }
     //회원가입
 

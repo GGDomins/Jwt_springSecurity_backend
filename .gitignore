@@ -1,5 +1,6 @@
 HELP.md
 .gradle
+# Ignore application.yml
 src/main/resources/application.yml
 !gradle/wrapper/gradle-wrapper.jar
 settings.gradle

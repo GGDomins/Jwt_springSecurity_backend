@@ -2,12 +2,13 @@ HELP.md
 .gradle
 .github
 # Ignore application.yml
-src/main/resources/application.yml
+
 !gradle/wrapper/gradle-wrapper.jar
 settings.gradle
 out
 .github!**/src/main/**/build/
 !**/src/test/**/build/
+application.yml
 ### STS ###
 .apt_generated
 .classpath

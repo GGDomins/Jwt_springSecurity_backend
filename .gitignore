@@ -9,6 +9,8 @@ out
 .github!**/src/main/**/build/
 !**/src/test/**/build/
 application.yml
+.gitignore
+.well-known
 ### STS ###
 .apt_generated
 .classpath

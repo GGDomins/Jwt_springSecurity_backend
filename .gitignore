@@ -1,12 +1,11 @@
 HELP.md
 .gradle
-resources/application.yml
+src/main/resources/application.yml
 !gradle/wrapper/gradle-wrapper.jar
 settings.gradle
 out
 .github!**/src/main/**/build/
 !**/src/test/**/build/
-
 ### STS ###
 .apt_generated
 .classpath

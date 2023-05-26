@@ -1,8 +1,10 @@
 package restful_sign_project.controller;
 
 import com.fasterxml.jackson.databind.JsonSerializer;
+import com.nimbusds.oauth2.sdk.http.HTTPRequest;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -148,48 +150,87 @@ public class Member_Controller {
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<RefreshTokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
-        // 요청에서 refresh token 값을 추출
-        String refreshToken = refreshTokenRequest.getRefreshToken();
+    public ResponseEntity<RefreshTokenResponse> refreshToken(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
+        if (refreshToken != null) {
+            // Access Token 갱신
+            TokenResponse token = jwtTokenProvider.refreshToken(refreshToken);
 
-        // Access Token 갱신
-        TokenResponse token = jwtTokenProvider.refreshToken(refreshToken);
+            long currentTimeMillis = System.currentTimeMillis();
+            Long expireTimesEND = expireTimeMs + currentTimeMillis; // Spring에서 현재시간에서 expireTimeMs가 더해진 시간을 MS단위로 보낸다
+            log.info(expireTimesEND.toString());
 
-        long currentTimeMillis = System.currentTimeMillis();
-        Long expireTimesEND = expireTimeMs + currentTimeMillis; // Spring에서 현재시간에서 expireTimeMs가 더해진 시간을 MS단위로 보낸다
-        log.info(expireTimesEND.toString());
+            // 새로운 Access Token 값과 함께 응답 객체 생성
+            RefreshTokenResponse response = RefreshTokenResponse.builder()
+                    .code(StatusCode.OK)
+                    .message(ResponseMessage.REFRESH_TOKEN_SUCCESS)
+                    .build();
 
-        // 새로운 Access Token 값과 함께 응답 객체 생성
-        RefreshTokenResponse response = RefreshTokenResponse.builder()
-                .code(StatusCode.OK)
-                .message(ResponseMessage.REFRESH_TOKEN_SUCCESS)
-                .build();
+            // HTTP Only 쿠키에 RefreshToken 생성 후 전달
+            ResponseCookie responseCookie = ResponseCookie.from("refreshToken", token.getRefreshToken())
+                    .httpOnly(true)
+                    .secure(true)
+                    .sameSite("None")
+                    .path("/")
+                    .maxAge(3600000)
+                    .build();
 
-        //HTTPONLY 쿠키에 RefreshToken 생성후 전달
-        ResponseCookie responseCookie =
-                ResponseCookie.from("refreshToken", token.getRefreshToken())
-//                        .domain("restful-jwt-project.herokuapp.com")
-                        .httpOnly(true)
-                        .secure(true)
-                        .sameSite("None")
-                        .path("/")
-                        .maxAge(3600000)
-                        .build();
-
-        return ResponseEntity.ok().
-                header(HttpHeaders.SET_COOKIE,responseCookie.toString())
-                .header("accessToken",token.getAccessToken())
-                .header("expireTime", String.valueOf(expireTimesEND))
-                .body(response);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+                    .header("accessToken", token.getAccessToken())
+                    .header("expireTime", String.valueOf(expireTimesEND))
+                    .body(response);
+        } else {
+            // refreshToken이 존재하지 않을 경우에 대한 처리
+            RefreshTokenResponse response = RefreshTokenResponse.builder()
+                    .code(StatusCode.BAD_REQUEST)
+                    .message(ResponseMessage.REFRESH_TOKEN_FAIL)
+                    .build();
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
+//        String refreshToken = null;
+//        Cookie[] cookies = request.getCookies();
+//        if (cookies != null) {
+//            for (Cookie cookie : cookies) {
+//                if (cookie.getName().equals("refreshToken")) {
+//                    refreshToken = cookie.getValue();
+//                    break;
+//                }
+//            }
+//        }
+//
+//        if (refreshToken != null) {
+//            // Access Token 갱신
+//            TokenResponse token = jwtTokenProvider.refreshToken(refreshToken);
+//
+//            long currentTimeMillis = System.currentTimeMillis();
+//            Long expireTimesEND = expireTimeMs + currentTimeMillis; // Spring에서 현재시간에서 expireTimeMs가 더해진 시간을 MS단위로 보낸다
+//            log.info(expireTimesEND.toString());
+//
+//            // 새로운 Access Token 값과 함께 응답 객체 생성
+//            RefreshTokenResponse response = RefreshTokenResponse.builder()
+//                    .code(StatusCode.OK)
+//                    .message(ResponseMessage.REFRESH_TOKEN_SUCCESS)
+//                    .build();
+//
+//            // HTTP Only 쿠키에 RefreshToken 생성 후 전달
+//            ResponseCookie responseCookie = ResponseCookie.from("refreshToken", token.getRefreshToken())
+//                    .httpOnly(true)
+//                    .secure(true)
+//                    .sameSite("None")
+//                    .path("/")
+//                    .maxAge(3600000)
+//                    .build();
+//
+//            return ResponseEntity.ok()
+//                    .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+//                    .header("accessToken", token.getAccessToken())
+//                    .header("expireTime", String.valueOf(expireTimesEND))
+//                    .body(response);
+//        } else {
+//            // refreshToken이 존재하지 않을 경우에 대한 처리
 
-    @GetMapping("/PasswordChange") // AccessToken이 있다면 정상적으로 접근 가능
-    public ResponseEntity<?> passWordChange(HttpServletRequest request) {
-        String token = jwtTokenProvider.resolveToken(request);
-        ResponseEntity<?> result = pageService.findPageByToken(token);
-        return result;
-    }
 
     @PostMapping("/passwordChange/{id}")
     public ResponseEntity<?> passWordChange(@PathVariable Long id, @RequestBody Map<String, String> password) {

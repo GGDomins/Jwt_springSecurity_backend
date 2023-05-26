@@ -51,7 +51,7 @@ public class Member_Controller {
     @Value("${jwt.token.secret}")
     private String key;
 
-    private final Long expireTimeMs = 1000 * 60 * 60l;
+    private final Long expireTimeMs = 30000l;
     private final Long RefreshExpireTimeMs = 1000 * 60 * 60 * 60L;
 
     public Member_Controller(
@@ -188,48 +188,6 @@ public class Member_Controller {
             return ResponseEntity.badRequest().body(response);
         }
     }
-
-//        String refreshToken = null;
-//        Cookie[] cookies = request.getCookies();
-//        if (cookies != null) {
-//            for (Cookie cookie : cookies) {
-//                if (cookie.getName().equals("refreshToken")) {
-//                    refreshToken = cookie.getValue();
-//                    break;
-//                }
-//            }
-//        }
-//
-//        if (refreshToken != null) {
-//            // Access Token 갱신
-//            TokenResponse token = jwtTokenProvider.refreshToken(refreshToken);
-//
-//            long currentTimeMillis = System.currentTimeMillis();
-//            Long expireTimesEND = expireTimeMs + currentTimeMillis; // Spring에서 현재시간에서 expireTimeMs가 더해진 시간을 MS단위로 보낸다
-//            log.info(expireTimesEND.toString());
-//
-//            // 새로운 Access Token 값과 함께 응답 객체 생성
-//            RefreshTokenResponse response = RefreshTokenResponse.builder()
-//                    .code(StatusCode.OK)
-//                    .message(ResponseMessage.REFRESH_TOKEN_SUCCESS)
-//                    .build();
-//
-//            // HTTP Only 쿠키에 RefreshToken 생성 후 전달
-//            ResponseCookie responseCookie = ResponseCookie.from("refreshToken", token.getRefreshToken())
-//                    .httpOnly(true)
-//                    .secure(true)
-//                    .sameSite("None")
-//                    .path("/")
-//                    .maxAge(3600000)
-//                    .build();
-//
-//            return ResponseEntity.ok()
-//                    .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-//                    .header("accessToken", token.getAccessToken())
-//                    .header("expireTime", String.valueOf(expireTimesEND))
-//                    .body(response);
-//        } else {
-//            // refreshToken이 존재하지 않을 경우에 대한 처리
 
 
     @PostMapping("/passwordChange/{id}")

@@ -6,7 +6,7 @@ spring:
     password: ghddydwns0928!!
   mail:
     host: smtp.naver.com
-    port: 465
+    port: 587
     username: kevin0928@naver.com
     password: ghddydwns0928!!
     properties:

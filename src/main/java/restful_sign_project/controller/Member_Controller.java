@@ -146,27 +146,17 @@ public class Member_Controller {
                 .header("expireTime", String.valueOf(expireTimesEND))
                 .body(loginResponse);
     }
-
-//    @GetMapping("/logout")
-//    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
-//        String accessToken = jwtTokenProvider.resolveToken(request);
-//        if (!jwtTokenProvider.validateToken(accessToken)) {
-//            throw new IllegalStateException("유효하지 않은 토큰입니다.");
-//        }
-//        String userEmail = jwtTokenProvider.getUserPk(accessToken);
-//        log.info(userEmail);
-//        if (redisTemplate.opsForValue().get(userEmail) != null) {
-//            log.info("redisTemplate에 refresh토큰이 존재한다.");
-//            redisTemplate.delete(userEmail); // refresh Token 삭제
-//        }
-//        Long accessTokenExpireTime = jwtTokenProvider.getExpiration(accessToken);
-//        redisTemplate.opsForValue().set(accessToken, "logout", accessTokenExpireTime, TimeUnit.MILLISECONDS);
-//        LogoutResponse logoutResponse = LogoutResponse.builder()
-//                .code(StatusCode.OK)
-//                .message(ResponseMessage.LOGOUT_SUCCESS)
-//                .build();
-//        return ResponseEntity.ok(logoutResponse);
-//    }
+    @GetMapping("/logout")
+    public void logout(HttpServletRequest httpServletRequest) {
+        String accessToken = jwtTokenProvider.resolveToken(httpServletRequest);
+        // 로그아웃 하고 싶은 토큰이 유효한 지 먼저 검증하기
+        if (!jwtTokenProvider.validateToken(accessToken)) {
+            throw new IllegalArgumentException("로그아웃: 유효하지 않은 토큰입니다.");
+        }
+        Long tokenExpireTime = jwtTokenProvider.getExpiration(accessToken);
+        // 해당 Access Token 유효시간을 가지고 와서 BlackList에 저장하기
+        redisTemplate.opsForValue().set(accessToken, "logout", tokenExpireTime, TimeUnit.MILLISECONDS);
+    }
 
 
 

@@ -1,6 +1,6 @@
 package restful_sign_project.controller;
 
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,7 +28,6 @@ public class Page_Controller {
     private final RedisService redisService;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
     private final PageService pageService;
-    private final RedisTemplate redisTemplate;
 
 
     public Page_Controller(
@@ -37,41 +36,22 @@ public class Page_Controller {
             JwtTokenProvider jwtTokenProvider,
             RedisService redisService,
             RefreshTokenRedisRepository refreshTokenRedisRepository,
-            PageService pageService, RedisTemplate redisTemplate) {
+            PageService pageService) {
         this.encoder = encoder;
         this.memberService = memberService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.redisService = redisService;
         this.refreshTokenRedisRepository = refreshTokenRedisRepository;
         this.pageService = pageService;
-        this.redisTemplate = redisTemplate;
     }
 
     @GetMapping("/my-page") // AccessToken이 있다면 정상적으로 접근 가능
     public ResponseEntity<?> myPage(HttpServletRequest request) {
         // JWT 토큰 추출
         String token = jwtTokenProvider.resolveToken(request);
-
-        // AccessToken이 유효한지 확인
-        if (!jwtTokenProvider.validateToken(token)) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
-        }
-
-        // AccessToken이 로그아웃 상태인지 확인
-        if (isTokenLoggedOut(token)) {
-            throw new IllegalArgumentException("로그아웃된 토큰입니다.");
-        }
-
         ResponseEntity<?> result = pageService.findPageByToken(token);
         return result;
     }
-
-    private boolean isTokenLoggedOut(String token) {
-        // Redis에서 해당 AccessToken이 로그아웃된 상태인지 확인
-        Object status = redisTemplate.opsForValue().get(token);
-        return status != null && status.equals("logout");
-    }
-
     @GetMapping("/my-page2")
     @PreAuthorize("hasRole('ROLE_USER')") // ROLE_USER가 아니면 403에러가 일어난다.
     public ResponseEntity<PageResponse> myPage() {

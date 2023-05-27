@@ -15,10 +15,10 @@ public class RedisService {
     private final RedisTemplate redisTemplate;
 
     // 키-벨류 설정
-    public void setValues(String email, String token){
+    public void setValues(String token, String email){
         ValueOperations<String, String> values = redisTemplate.opsForValue();
 //        values.set(name, age);
-        values.set(email, token, Duration.ofMinutes(3));  // 3분 뒤 메모리에서 삭제된다.
+        values.set(token, email, Duration.ofMinutes(3));  // 3분 뒤 메모리에서 삭제된다.
     }
 
     // 키값으로 벨류 가져오기

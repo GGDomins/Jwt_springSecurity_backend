@@ -122,7 +122,7 @@ public class Member_Controller {
 
         String token = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), expireTimeMs); //AccessToken : tokenProvider을 통해서 인자로 이메일,역할,시간을 보낸다.
         String refreshToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), RefreshExpireTimeMs); //RefreshToken : tokenProvider을 통해서 인자로 이메일,역할,시간을 보낸다.
-        redisService.setValues(member.getEmail(),refreshToken);
+        redisService.setValues(refreshToken,member.getEmail());
         log.info(token);
         log.info(refreshToken);
         //HTTPONLY 쿠키에 RefreshToken 생성후 전달
@@ -147,25 +147,28 @@ public class Member_Controller {
                 .body(loginResponse);
     }
 
-    @GetMapping("/logout")
-    public ResponseEntity<LogoutResponse> logout(@RequestBody Map<String, String> token) {
-        String accessToken = token.get("accessToken");
-        if (!jwtTokenProvider.validateToken(accessToken)) {
-            throw new IllegalStateException("유효하지 않은 토큰입니다.");
-        }
-        String userEmail = jwtTokenProvider.getUserPk(accessToken);
-        if (redisTemplate.opsForValue().get(userEmail) != null) {
-            log.info("redisTemplate에 refresh토큰이 존재한다.");
-            redisTemplate.delete(userEmail); // refresh Token 삭제
-        }
-        Long AccessTokenExpiretime = jwtTokenProvider.getExpiration(accessToken);
-        redisTemplate.opsForValue().set(accessToken,"logout",AccessTokenExpiretime,TimeUnit.MILLISECONDS);
-        LogoutResponse logoutResponse = LogoutResponse.builder()
-                .code(StatusCode.OK)
-                .message(ResponseMessage.LOGOUT_SUCCESS)
-                .build();
-        return ResponseEntity.ok(logoutResponse);
-    }
+//    @GetMapping("/logout")
+//    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
+//        String accessToken = jwtTokenProvider.resolveToken(request);
+//        if (!jwtTokenProvider.validateToken(accessToken)) {
+//            throw new IllegalStateException("유효하지 않은 토큰입니다.");
+//        }
+//        String userEmail = jwtTokenProvider.getUserPk(accessToken);
+//        log.info(userEmail);
+//        if (redisTemplate.opsForValue().get(userEmail) != null) {
+//            log.info("redisTemplate에 refresh토큰이 존재한다.");
+//            redisTemplate.delete(userEmail); // refresh Token 삭제
+//        }
+//        Long accessTokenExpireTime = jwtTokenProvider.getExpiration(accessToken);
+//        redisTemplate.opsForValue().set(accessToken, "logout", accessTokenExpireTime, TimeUnit.MILLISECONDS);
+//        LogoutResponse logoutResponse = LogoutResponse.builder()
+//                .code(StatusCode.OK)
+//                .message(ResponseMessage.LOGOUT_SUCCESS)
+//                .build();
+//        return ResponseEntity.ok(logoutResponse);
+//    }
+
+
 
     @PostMapping("/refresh-token")
     public ResponseEntity<RefreshTokenResponse> refreshToken(@CookieValue(value = "refreshToken", required = false) String refreshToken) {

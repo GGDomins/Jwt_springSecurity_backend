@@ -2,6 +2,8 @@ package restful_sign_project.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,12 +20,15 @@ import restful_sign_project.repository.Member_Repository;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional(readOnly = false)
 @RequiredArgsConstructor
 public class Member_Service implements UserDetailsService {
     private final Member_Repository memberRepository;
+    private final RedisService redisService;
+    private final RedisTemplate redisTemplate;
 
 
     @Transactional
@@ -49,4 +54,5 @@ public class Member_Service implements UserDetailsService {
         return memberRepository.findMemberByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
     }
+
 }

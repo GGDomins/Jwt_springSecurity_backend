@@ -5,6 +5,8 @@ package restful_sign_project.controller.status;
 public class ResponseMessage {
     public static final String LOGIN_SUCCESS = "로그인 성공";
     public static final String LOGIN_FAILED = "로그인 실패";
+    public static final String LOGOUT_SUCCESS = "로그아웃 성공";
+    public static final String LOGOUT_FAILED = "로그아웃 실패";
     public static final String SIGNIN_SUCCESS = "회원 가입 성공";
     public static final String EMAIL_OK = "사용 가능한 이메일입니다.";
     public static final String EMAIL_EXISTED = "이미 사용 중인 이메일입니다.";

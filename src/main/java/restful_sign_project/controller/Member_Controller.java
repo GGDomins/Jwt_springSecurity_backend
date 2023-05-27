@@ -3,6 +3,7 @@ package restful_sign_project.controller;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -24,7 +25,9 @@ import restful_sign_project.service.Member_Service;
 import restful_sign_project.service.PageService;
 import restful_sign_project.service.RedisService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @RestController("/api")
 @Slf4j
@@ -41,6 +44,7 @@ public class Member_Controller {
     private final PageService pageService;
     private final Member_Repository memberRepository;
     private final EmailService emailService;
+    private RedisTemplate redisTemplate;
     @Value("${jwt.token.secret}")
     private String key;
 
@@ -118,7 +122,7 @@ public class Member_Controller {
 
         String token = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), expireTimeMs); //AccessToken : tokenProvider을 통해서 인자로 이메일,역할,시간을 보낸다.
         String refreshToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), RefreshExpireTimeMs); //RefreshToken : tokenProvider을 통해서 인자로 이메일,역할,시간을 보낸다.
-        redisService.setValues(refreshToken, member.getEmail());
+        redisService.setValues(member.getEmail(),refreshToken);
         log.info(token);
         log.info(refreshToken);
         //HTTPONLY 쿠키에 RefreshToken 생성후 전달
@@ -141,6 +145,26 @@ public class Member_Controller {
                 .header("accessToken", token)
                 .header("expireTime", String.valueOf(expireTimesEND))
                 .body(loginResponse);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<LogoutResponse> logout(@RequestBody Map<String, String> token) {
+        String accessToken = token.get("accessToken");
+        if (!jwtTokenProvider.validateToken(accessToken)) {
+            throw new IllegalStateException("유효하지 않은 토큰입니다.");
+        }
+        String userEmail = jwtTokenProvider.getUserPk(accessToken);
+        if (redisTemplate.opsForValue().get(userEmail) != null) {
+            log.info("redisTemplate에 refresh토큰이 존재한다.");
+            redisTemplate.delete(userEmail); // refresh Token 삭제
+        }
+        Long AccessTokenExpiretime = jwtTokenProvider.getExpiration(accessToken);
+        redisTemplate.opsForValue().set(accessToken,"logout",AccessTokenExpiretime,TimeUnit.MILLISECONDS);
+        LogoutResponse logoutResponse = LogoutResponse.builder()
+                .code(StatusCode.OK)
+                .message(ResponseMessage.LOGOUT_SUCCESS)
+                .build();
+        return ResponseEntity.ok(logoutResponse);
     }
 
     @PostMapping("/refresh-token")

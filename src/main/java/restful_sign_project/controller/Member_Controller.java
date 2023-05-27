@@ -48,7 +48,7 @@ public class Member_Controller {
     @Value("${jwt.token.secret}")
     private String key;
 
-    private final Long expireTimeMs = 30000l;
+    private final Long expireTimeMs = 300000l;
     private final Long RefreshExpireTimeMs = 1000 * 60 * 60 * 60L;
 
     public Member_Controller(
@@ -155,13 +155,14 @@ public class Member_Controller {
         }
         Long tokenExpireTime = jwtTokenProvider.getExpiration(accessToken);
         // 해당 Access Token 유효시간을 가지고 와서 BlackList에 저장하기
-        redisTemplate.opsForValue().set(accessToken, "logout", tokenExpireTime, TimeUnit.MILLISECONDS);
+        redisService.setValues("logout",accessToken);
     }
 
 
 
     @PostMapping("/refresh-token")
     public ResponseEntity<RefreshTokenResponse> refreshToken(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
+        log.info(refreshToken);
         if (refreshToken != null) {
             // Access Token 갱신
             TokenResponse token = jwtTokenProvider.refreshToken(refreshToken);

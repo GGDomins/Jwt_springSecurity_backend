@@ -1,6 +1,6 @@
 package restful_sign_project.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,7 +28,7 @@ public class Page_Controller {
     private final RedisService redisService;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
     private final PageService pageService;
-
+    private final RedisTemplate redisTemplate;
 
     public Page_Controller(
             BCryptPasswordEncoder encoder,
@@ -36,13 +36,14 @@ public class Page_Controller {
             JwtTokenProvider jwtTokenProvider,
             RedisService redisService,
             RefreshTokenRedisRepository refreshTokenRedisRepository,
-            PageService pageService) {
+            PageService pageService, RedisTemplate redisTemplate) {
         this.encoder = encoder;
         this.memberService = memberService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.redisService = redisService;
         this.refreshTokenRedisRepository = refreshTokenRedisRepository;
         this.pageService = pageService;
+        this.redisTemplate = redisTemplate;
     }
 
     @GetMapping("/my-page") // AccessToken이 있다면 정상적으로 접근 가능

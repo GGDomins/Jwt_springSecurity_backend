@@ -146,17 +146,17 @@ public class Member_Controller {
                 .header("expireTime", String.valueOf(expireTimesEND))
                 .body(loginResponse);
     }
-//    @GetMapping("/logout")
-//    public void logout(HttpServletRequest httpServletRequest) {
-//        String accessToken = jwtTokenProvider.resolveToken(httpServletRequest);
-//        // 로그아웃 하고 싶은 토큰이 유효한 지 먼저 검증하기
-//        if (!jwtTokenProvider.validateToken(accessToken)) {
-//            throw new IllegalArgumentException("로그아웃: 유효하지 않은 토큰입니다.");
-//        }
-//        Long tokenExpireTime = jwtTokenProvider.getExpiration(accessToken);
-//        // 해당 Access Token 유효시간을 가지고 와서 BlackList에 저장하기
-//        redisTemplate.opsForValue().set(accessToken, "logout", tokenExpireTime, TimeUnit.MILLISECONDS);
-//    }
+    @GetMapping("/logout")
+    public void logout(HttpServletRequest httpServletRequest) {
+        String accessToken = jwtTokenProvider.resolveToken(httpServletRequest);
+        // 로그아웃 하고 싶은 토큰이 유효한 지 먼저 검증하기
+        if (!jwtTokenProvider.validateToken(accessToken)) {
+            throw new IllegalArgumentException("로그아웃: 유효하지 않은 토큰입니다.");
+        }
+        Long tokenExpireTime = jwtTokenProvider.getExpiration(accessToken);
+        // 해당 Access Token 유효시간을 가지고 와서 BlackList에 저장하기
+        redisTemplate.opsForValue().set(accessToken, "logout", tokenExpireTime, TimeUnit.MILLISECONDS);
+    }
 
 
 

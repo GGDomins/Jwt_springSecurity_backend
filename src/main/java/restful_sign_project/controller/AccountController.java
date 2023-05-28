@@ -19,7 +19,6 @@ public class AccountController {
     @ResponseBody
     public String mailConfirm(@RequestParam String email) throws Exception {
         String code = emailService.sendSimpleMessage(email);
-        log.info("인증코드 : " + code);
         return code;
     }
 }

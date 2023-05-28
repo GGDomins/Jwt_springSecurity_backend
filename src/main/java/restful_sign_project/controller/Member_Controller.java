@@ -1,5 +1,6 @@
 package restful_sign_project.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -33,40 +34,19 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Transactional
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class Member_Controller {
     private final BCryptPasswordEncoder encoder;
     private final Member_Service memberService;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
-    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
-    private final PageService pageService;
     private final Member_Repository memberRepository;
-    private final EmailService emailService;
-    private RedisTemplate redisTemplate;
     @Value("${jwt.token.secret}")
     private String key;
 
     private final Long expireTimeMs = 300000l;
     private final Long RefreshExpireTimeMs = 1000 * 60 * 60 * 60L;
 
-    public Member_Controller(
-            BCryptPasswordEncoder encoder,
-            Member_Service memberService,
-            JwtTokenProvider jwtTokenProvider,
-            RedisService redisService,
-            RefreshTokenRedisRepository refreshTokenRedisRepository,
-            PageService pageService,
-            Member_Repository memberRepository, EmailService emailService) {
-        this.encoder = encoder;
-        this.memberService = memberService;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.redisService = redisService;
-        this.refreshTokenRedisRepository = refreshTokenRedisRepository;
-        this.pageService = pageService;
-        this.memberRepository = memberRepository;
-        this.emailService = emailService;
-    }
-    //회원가입
 
     /**
      * JSON형식으로 입력을 받으며 STRING : STRING 형식으로 입력을 받기 때문에 Map함수를 사용함.
@@ -107,8 +87,6 @@ public class Member_Controller {
             return new ResponseEntity<>(loginResponse, HttpStatus.BAD_REQUEST);
         }
         Member member = member1.get(); //member가 있는 경우
-        log.info(member.getPassword());
-        log.info(user.get("password"));
         if (!encoder.matches(user.get("password"), member.getPassword())) { //
             loginResponse = LoginResponse.builder()
                     .code(StatusCode.FORBIDDEN)
@@ -118,14 +96,9 @@ public class Member_Controller {
         }
         long currentTimeMillis = System.currentTimeMillis();
         Long expireTimesEND = expireTimeMs + currentTimeMillis; // Spring에서 현재시간에서 expireTimeMs가 더해진 시간을 MS단위로 보낸다
-        log.info(expireTimesEND.toString());
-
         String token = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), expireTimeMs); //AccessToken : tokenProvider을 통해서 인자로 이메일,역할,시간을 보낸다.
         String refreshToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), RefreshExpireTimeMs); //RefreshToken : tokenProvider을 통해서 인자로 이메일,역할,시간을 보낸다.
-        log.info(refreshToken);
         redisService.setValues(refreshToken, member.getEmail());
-        log.info(token);
-        log.info(refreshToken);
         //HTTPONLY 쿠키에 RefreshToken 생성후 전달
         ResponseCookie responseCookie =
                 ResponseCookie.from("refreshToken", refreshToken)
@@ -223,7 +196,6 @@ public class Member_Controller {
         Member member = op_member.get();
         if (!currentPassword.equals(newPassWord)) {
             if (encoder.matches(currentPassword, member.getPassword())) {
-                log.info("비밀번호 똑같아요!!");
                 BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
                 String bcry_password = passwordEncoder.encode(newPassWord);
                 member.setPassWord(bcry_password);
@@ -235,7 +207,6 @@ public class Member_Controller {
                         .build();
                 return ResponseEntity.ok(passwordChangeResponse);
             } else {
-                log.info(member.getName());
                 return new ResponseEntity<>(passwordChangeResponse, HttpStatus.BAD_REQUEST);
             }
         } else {

@@ -1,5 +1,6 @@
 package restful_sign_project.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,31 +21,11 @@ import restful_sign_project.service.RedisService;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@RequiredArgsConstructor
 @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
 public class Page_Controller {
-    private final BCryptPasswordEncoder encoder;
-    private final Member_Service memberService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RedisService redisService;
-    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
     private final PageService pageService;
-    private final RedisTemplate redisTemplate;
-
-    public Page_Controller(
-            BCryptPasswordEncoder encoder,
-            Member_Service memberService,
-            JwtTokenProvider jwtTokenProvider,
-            RedisService redisService,
-            RefreshTokenRedisRepository refreshTokenRedisRepository,
-            PageService pageService, RedisTemplate redisTemplate) {
-        this.encoder = encoder;
-        this.memberService = memberService;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.redisService = redisService;
-        this.refreshTokenRedisRepository = refreshTokenRedisRepository;
-        this.pageService = pageService;
-        this.redisTemplate = redisTemplate;
-    }
 
     @GetMapping("/my-page") // AccessToken이 있다면 정상적으로 접근 가능
     public ResponseEntity<?> myPage(HttpServletRequest request) {

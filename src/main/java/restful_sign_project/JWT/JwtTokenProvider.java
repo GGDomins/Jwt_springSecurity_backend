@@ -120,6 +120,32 @@ public class JwtTokenProvider {
             throw new IllegalStateException("Invalid refresh token");
         }
     }
+    public TokenResponse logoutResfreshToken(String refreshToken) {
+//        Long tokenValidTime = 1000 * 60 * 60l;
+        Long RefreshExpireTimeMs = 1000L;
+        // Check if the refresh token exists in Redis
+        if (redisService.exists(refreshToken)) {
+            // Get the email associated with the refresh token from Redis
+            String email = redisService.getValues(refreshToken);
+
+            // Get the user details from the userDetailsService
+            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+            // Generate a new access token
+//            String newAccessToken = createToken(userDetails.getUsername(), getRolesFromUserDetails(userDetails), tokenValidTime);
+            String newRefreshToken = createToken(userDetails.getUsername(), getRolesFromUserDetails(userDetails), RefreshExpireTimeMs);
+
+            TokenResponse tokenResponse = TokenResponse.builder()
+                    .RefreshToken(newRefreshToken)
+//                    .AccessToken(newAccessToken)
+                    .build();
+            redisService.setValues(newRefreshToken, email);
+            redisService.delValues("Bearer " + refreshToken);
+            return tokenResponse;
+        } else {
+            throw new IllegalStateException("Invalid refresh token");
+        }
+    }
     private List<String> getRolesFromUserDetails(UserDetails userDetails) {
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
         return authorities.stream()

@@ -148,15 +148,24 @@ public class Member_Controller {
                 .body(loginResponse);
     }
     @GetMapping("/logout")
-    public void logout(HttpServletRequest httpServletRequest) {
-        String accessToken = jwtTokenProvider.resolveToken(httpServletRequest);
-        // 로그아웃 하고 싶은 토큰이 유효한 지 먼저 검증하기
-        if (!jwtTokenProvider.validateToken(accessToken)) {
-            throw new IllegalArgumentException("로그아웃: 유효하지 않은 토큰입니다.");
-        }
-        Long tokenExpireTime = jwtTokenProvider.getExpiration(accessToken);
-        // 해당 Access Token 유효시간을 가지고 와서 BlackList에 저장하기
-        redisService.setValues("logout",accessToken);
+    public ResponseEntity<LogoutResponse> logout(@CookieValue(value = "refreshToken", required = false)String refreshToken) {
+        TokenResponse tokenResponse = jwtTokenProvider.logoutResfreshToken(refreshToken);
+        String logoutRefreshToken = tokenResponse.getRefreshToken();
+        LogoutResponse logoutResponse = LogoutResponse.builder()
+                .code(StatusCode.OK)
+                .message(ResponseMessage.LOGOUT_SUCCESS)
+                .build();
+        // HTTP Only 쿠키에 RefreshToken 생성 후 전달
+        ResponseCookie responseCookie = ResponseCookie.from("refreshToken","") // 공백으로 보냄
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .path("/")
+                .maxAge(3600000)
+                .build();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+                .body(logoutResponse);
     }
 
 

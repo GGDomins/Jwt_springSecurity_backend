@@ -122,6 +122,7 @@ public class Member_Controller {
 
         String token = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), expireTimeMs); //AccessToken : tokenProvider을 통해서 인자로 이메일,역할,시간을 보낸다.
         String refreshToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), RefreshExpireTimeMs); //RefreshToken : tokenProvider을 통해서 인자로 이메일,역할,시간을 보낸다.
+        log.info(refreshToken);
         redisService.setValues(refreshToken,member.getEmail());
         log.info(token);
         log.info(refreshToken);

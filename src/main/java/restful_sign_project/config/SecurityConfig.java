@@ -49,6 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .deleteCookies("refreshToken") // 쿠키 삭제
                 .and()
                 .cors() // CORS 구성을 활성화합니다.
+                /**
+                 * @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com") 어노테이션은 Spring MVC에서 CORS를 구성하는 방법 중 하나입니다.
+                 *
+                 * 그러나 앞서 제안한 방법 중 두 번째 방법을 사용하여 Spring Security 설정에서 CORS를 구성했다면, @CrossOrigin 어노테이션을 사용할 필요는 없습니다. Spring Security의 CORS 구성은 모든 엔드포인트에 대해 적용되기 때문에, @CrossOrigin 어노테이션을 개별적으로 추가할 필요가 없습니다.
+                 *
+                 * 따라서, 주어진 코드에서 @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com") 어노테이션을 제거해도 됩니다. Spring Security 설정에 의해 CORS가 이미 구성되었으므로, 해당 도메인에서의 접근이 허용될 것입니다.
+                 */
                 .and()
                 .csrf().disable()
                 .httpBasic().disable()

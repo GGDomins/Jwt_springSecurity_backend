@@ -71,7 +71,7 @@ public class Member_Controller {
     /**
      * JSON형식으로 입력을 받으며 STRING : STRING 형식으로 입력을 받기 때문에 Map함수를 사용함.
      */
-    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
+//    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/signup")
     public ResponseEntity<SignInResponse> signup(@RequestBody Map<String, String> memberDto) {
         SignInResponse response = new SignInResponse();
@@ -94,7 +94,7 @@ public class Member_Controller {
     }
 
     // 로그인
-    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
+//    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody Map<String, String> user) { //로그인도 회원가입과 마찬가지로 map함수를 사용해서 받음
         LoginResponse loginResponse = new LoginResponse();
@@ -147,7 +147,7 @@ public class Member_Controller {
                 .header("expireTime", String.valueOf(expireTimesEND))
                 .body(loginResponse);
     }
-    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
+//    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/logout")
     public ResponseEntity<LogoutResponse> logout(@CookieValue(value = "refreshToken", required = false)String refreshToken) {
         TokenResponse tokenResponse = jwtTokenProvider.logoutResfreshToken(refreshToken);
@@ -170,7 +170,7 @@ public class Member_Controller {
     }
 
 
-    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
+//    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/refresh-token")
     public ResponseEntity<RefreshTokenResponse> refreshToken(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
         log.info(refreshToken);
@@ -212,7 +212,7 @@ public class Member_Controller {
         }
     }
 
-    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
+//    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/passwordChange/{id}")
     public ResponseEntity<?> passWordChange(@PathVariable Long id, @RequestBody Map<String, String> password) {
         String currentPassword = password.get("currentPassword");

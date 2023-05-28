@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Transactional
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
 public class Member_Controller {
     private final BCryptPasswordEncoder encoder;
     private final Member_Service memberService;
@@ -72,6 +71,7 @@ public class Member_Controller {
     /**
      * JSON형식으로 입력을 받으며 STRING : STRING 형식으로 입력을 받기 때문에 Map함수를 사용함.
      */
+    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/signup")
     public ResponseEntity<SignInResponse> signup(@RequestBody Map<String, String> memberDto) {
         SignInResponse response = new SignInResponse();
@@ -94,6 +94,7 @@ public class Member_Controller {
     }
 
     // 로그인
+    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody Map<String, String> user) { //로그인도 회원가입과 마찬가지로 map함수를 사용해서 받음
         LoginResponse loginResponse = new LoginResponse();
@@ -122,7 +123,7 @@ public class Member_Controller {
         String token = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), expireTimeMs); //AccessToken : tokenProvider을 통해서 인자로 이메일,역할,시간을 보낸다.
         String refreshToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoles(), RefreshExpireTimeMs); //RefreshToken : tokenProvider을 통해서 인자로 이메일,역할,시간을 보낸다.
         log.info(refreshToken);
-        redisService.setValues(refreshToken,member.getEmail());
+        redisService.setValues(refreshToken, member.getEmail());
         log.info(token);
         log.info(refreshToken);
         //HTTPONLY 쿠키에 RefreshToken 생성후 전달
@@ -147,7 +148,7 @@ public class Member_Controller {
                 .body(loginResponse);
     }
     @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<LogoutResponse> logout(@CookieValue(value = "refreshToken", required = false)String refreshToken) {
         TokenResponse tokenResponse = jwtTokenProvider.logoutResfreshToken(refreshToken);
         String logoutRefreshToken = tokenResponse.getRefreshToken();
@@ -169,7 +170,7 @@ public class Member_Controller {
     }
 
 
-
+    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/refresh-token")
     public ResponseEntity<RefreshTokenResponse> refreshToken(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
         log.info(refreshToken);
@@ -211,7 +212,7 @@ public class Member_Controller {
         }
     }
 
-
+    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/passwordChange/{id}")
     public ResponseEntity<?> passWordChange(@PathVariable Long id, @RequestBody Map<String, String> password) {
         String currentPassword = password.get("currentPassword");

@@ -16,8 +16,12 @@ public class RedisConfig {
 
     @Value("${spring.redis.port}") // yml에 port 정의
     private int redisPort;
+
     @Value("${spring.redis.password}")
     private String redisPassword;
+
+    @Value("${spring.redis.ssl}")
+    private boolean useSsl;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
@@ -25,6 +29,10 @@ public class RedisConfig {
         redisStandaloneConfiguration.setHostName(redisHost);
         redisStandaloneConfiguration.setPort(redisPort);
         redisStandaloneConfiguration.setPassword(redisPassword);
-        return new LettuceConnectionFactory(redisStandaloneConfiguration);
+
+        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisStandaloneConfiguration);
+        lettuceConnectionFactory.setUseSsl(useSsl);
+
+        return lettuceConnectionFactory;
     }
 }

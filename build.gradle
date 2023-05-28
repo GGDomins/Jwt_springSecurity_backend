@@ -42,6 +42,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'redis.clients:jedis:4.3.0'
 
 }
 

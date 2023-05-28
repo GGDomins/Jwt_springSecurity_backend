@@ -34,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 @Transactional
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
-
 public class Member_Controller {
     private final BCryptPasswordEncoder encoder;
     private final Member_Service memberService;
@@ -147,6 +146,7 @@ public class Member_Controller {
                 .header("expireTime", String.valueOf(expireTimesEND))
                 .body(loginResponse);
     }
+    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @GetMapping("/logout")
     public ResponseEntity<LogoutResponse> logout(@CookieValue(value = "refreshToken", required = false)String refreshToken) {
         TokenResponse tokenResponse = jwtTokenProvider.logoutResfreshToken(refreshToken);

@@ -123,7 +123,6 @@ public class Member_Controller {
 //    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/logout")
     public ResponseEntity<LogoutResponse> logout(@CookieValue(value = "refreshToken", required = false)String refreshToken) {
-        redisService.delValues(refreshToken);
         TokenResponse tokenResponse = jwtTokenProvider.logoutResfreshToken(refreshToken);
         String logoutRefreshToken = tokenResponse.getRefreshToken();
         LogoutResponse logoutResponse = LogoutResponse.builder()

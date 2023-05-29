@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
+//@CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
 public class Page_Controller {
     private final JwtTokenProvider jwtTokenProvider;
     private final PageService pageService;

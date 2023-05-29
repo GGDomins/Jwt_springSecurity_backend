@@ -130,7 +130,7 @@ public class Member_Controller {
                 .message(ResponseMessage.LOGOUT_SUCCESS)
                 .build();
         // HTTP Only 쿠키에 RefreshToken 생성 후 전달
-        ResponseCookie responseCookie = ResponseCookie.from("refreshToken","") // 공백으로 보냄
+        ResponseCookie responseCookie = ResponseCookie.from("refreshToken",logoutRefreshToken) // 공백으로 보냄
                 .httpOnly(true)
                 .secure(true)
                 .sameSite("None")

@@ -34,6 +34,13 @@ public class Page_Controller {
         ResponseEntity<?> result = pageService.findPageByToken(token);
         return result;
     }
+    @GetMapping("/about-us") // AccessToken이 있다면 정상적으로 접근 가능
+    public ResponseEntity<?> about_us(HttpServletRequest request) {
+        // JWT 토큰 추출
+        String token = jwtTokenProvider.resolveToken(request);
+        ResponseEntity<?> result = pageService.findPageByToken(token);
+        return result;
+    }
     @GetMapping("/my-page2")
     @PreAuthorize("hasRole('ROLE_USER')") // ROLE_USER가 아니면 403에러가 일어난다.
     public ResponseEntity<PageResponse> myPage() {

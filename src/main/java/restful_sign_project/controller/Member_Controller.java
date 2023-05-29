@@ -121,46 +121,26 @@ public class Member_Controller {
                 .body(loginResponse);
     }
 //    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
-@PostMapping("/logout")
-public ResponseEntity<RefreshTokenResponse> logout(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
-    log.info(refreshToken);
-    if (refreshToken != null) {
-        // Access Token 갱신
-        TokenResponse token = jwtTokenProvider.refreshToken(refreshToken);
+    @PostMapping("/logout")
+    public ResponseEntity<LogoutResponse> logout(@CookieValue(value = "refreshToken", required = false)String refreshToken) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        Long expireTimesEND = expireTimeMs + currentTimeMillis; // Spring에서 현재시간에서 expireTimeMs가 더해진 시간을 MS단위로 보낸다
-        log.info(expireTimesEND.toString());
-
-        // 새로운 Access Token 값과 함께 응답 객체 생성
-        RefreshTokenResponse response = RefreshTokenResponse.builder()
+        LogoutResponse logoutResponse = LogoutResponse.builder()
                 .code(StatusCode.OK)
-                .message(ResponseMessage.REFRESH_TOKEN_SUCCESS)
+                .message(ResponseMessage.LOGOUT_SUCCESS)
                 .build();
-
+        TokenResponse tokenResponse = jwtTokenProvider.refreshToken(refreshToken);
         // HTTP Only 쿠키에 RefreshToken 생성 후 전달
-        ResponseCookie responseCookie = ResponseCookie.from("refreshToken", token.getRefreshToken())
+        ResponseCookie responseCookie = ResponseCookie.from("refreshToken",tokenResponse.getRefreshToken()) // 공백으로 보냄
                 .httpOnly(true)
                 .secure(true)
                 .sameSite("None")
                 .path("/")
                 .maxAge(3600000)
                 .build();
-
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-                .header("accessToken", token.getAccessToken())
-                .header("expireTime", String.valueOf(expireTimesEND))
-                .body(response);
-    } else {
-        // refreshToken이 존재하지 않을 경우에 대한 처리
-        RefreshTokenResponse response = RefreshTokenResponse.builder()
-                .code(StatusCode.BAD_REQUEST)
-                .message(ResponseMessage.REFRESH_TOKEN_FAIL)
-                .build();
-        return ResponseEntity.badRequest().body(response);
+                .body(logoutResponse);
     }
-}
 
 
 //    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")

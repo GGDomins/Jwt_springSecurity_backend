@@ -121,8 +121,8 @@ public class JwtTokenProvider {
         }
     }
     public TokenResponse logoutResfreshToken(String refreshToken) {
-        Long tokenValidTime = 100L;
-        Long RefreshExpireTimeMs = 100L;
+        Long tokenValidTime = 1000l;
+        Long RefreshExpireTimeMs = 1000l;
         // Check if the refresh token exists in Redis
         if (redisService.exists(refreshToken)) {
             // Get the email associated with the refresh token from Redis

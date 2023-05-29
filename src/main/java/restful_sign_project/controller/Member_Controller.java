@@ -128,7 +128,9 @@ public class Member_Controller {
                 .code(StatusCode.OK)
                 .message(ResponseMessage.LOGOUT_SUCCESS)
                 .build();
-        redisService.delValues("Bearer " + refreshToken);
+        if (refreshToken != null) {
+            redisService.delValues(refreshToken);
+        }
 //        TokenResponse tokenResponse = jwtTokenProvider.logoutResfreshToken(refreshToken);
 //        String logoutRefreshToken = tokenResponse.getRefreshToken();
 //        // HTTP Only 쿠키에 RefreshToken 생성 후 전달

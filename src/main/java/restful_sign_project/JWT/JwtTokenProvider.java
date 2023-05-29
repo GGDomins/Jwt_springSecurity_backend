@@ -140,7 +140,7 @@ public class JwtTokenProvider {
 //                    .AccessToken(newAccessToken)
                     .build();
             redisService.setValues(newRefreshToken, email);
-            redisService.delValues("Bearer " + refreshToken);
+            redisService.delValues(refreshToken);
             return tokenResponse;
         } else {
             throw new IllegalStateException("Invalid refresh token");

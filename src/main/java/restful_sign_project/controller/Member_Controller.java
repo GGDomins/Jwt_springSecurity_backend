@@ -186,13 +186,13 @@ public class Member_Controller {
     }
 
 //    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
-    @PostMapping("/passwordChange/{id}")
-    public ResponseEntity<?> passWordChange(@PathVariable Long id, @RequestBody Map<String, String> password) {
+    @PostMapping("/passwordChange/{email}") // Front에서 사용자의 이메일 값을 받고 이메일 값으로 사용자를 추출한다.
+    public ResponseEntity<?> passWordChange(@PathVariable String email, @RequestBody Map<String, String> password) {
         String currentPassword = password.get("currentPassword");
         String newPassWord = password.get("newPassword");
         PasswordChangeResponse passwordChangeResponse = new PasswordChangeResponse();
         // ID를 기반으로 데이터베이스에서 해당 멤버를 조회합니다.
-        Optional<Member> op_member = memberRepository.findMemberById(id);
+        Optional<Member> op_member = memberRepository.findMemberByEmail(email);
         Member member = op_member.get();
         if (!currentPassword.equals(newPassWord)) {
             if (encoder.matches(currentPassword, member.getPassword())) {

@@ -123,22 +123,23 @@ public class Member_Controller {
 //    @CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
     @PostMapping("/logout")
     public ResponseEntity<LogoutResponse> logout(@CookieValue(value = "refreshToken", required = false)String refreshToken) {
-        TokenResponse tokenResponse = jwtTokenProvider.logoutResfreshToken(refreshToken);
-        String logoutRefreshToken = tokenResponse.getRefreshToken();
+
         LogoutResponse logoutResponse = LogoutResponse.builder()
                 .code(StatusCode.OK)
                 .message(ResponseMessage.LOGOUT_SUCCESS)
                 .build();
-        // HTTP Only 쿠키에 RefreshToken 생성 후 전달
-        ResponseCookie responseCookie = ResponseCookie.from("refreshToken",logoutRefreshToken) // 공백으로 보냄
-                .httpOnly(true)
-                .secure(true)
-                .sameSite("None")
-                .path("/")
-                .maxAge(3600000)
-                .build();
+        redisService.delValues("Bearer " + refreshToken);
+//        TokenResponse tokenResponse = jwtTokenProvider.logoutResfreshToken(refreshToken);
+//        String logoutRefreshToken = tokenResponse.getRefreshToken();
+//        // HTTP Only 쿠키에 RefreshToken 생성 후 전달
+//        ResponseCookie responseCookie = ResponseCookie.from("refreshToken",logoutRefreshToken) // 공백으로 보냄
+//                .httpOnly(true)
+//                .secure(true)
+//                .sameSite("None")
+//                .path("/")
+//                .maxAge(3600000)
+//                .build();
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
                 .body(logoutResponse);
     }
 

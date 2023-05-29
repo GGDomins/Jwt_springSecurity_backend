@@ -121,8 +121,8 @@ public class JwtTokenProvider {
         }
     }
     public TokenResponse logoutResfreshToken(String refreshToken) {
-        Long tokenValidTime = 1000l;
-        Long RefreshExpireTimeMs = 1000l;
+        Long tvd = 1000l;
+        Long rfd = 1000l;
         // Check if the refresh token exists in Redis
         if (redisService.exists(refreshToken)) {
             // Get the email associated with the refresh token from Redis
@@ -132,14 +132,14 @@ public class JwtTokenProvider {
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
             // Generate a new access token
-            String newAccessToken = createToken(userDetails.getUsername(), getRolesFromUserDetails(userDetails), tokenValidTime);
-            String newRefreshToken = createToken(userDetails.getUsername(), getRolesFromUserDetails(userDetails), RefreshExpireTimeMs);
+            String newAccessToken = createToken(userDetails.getUsername(), getRolesFromUserDetails(userDetails), tvd);
+            String newRefreshToken = createToken(userDetails.getUsername(), getRolesFromUserDetails(userDetails), rfd);
 
             TokenResponse tokenResponse = TokenResponse.builder()
                     .RefreshToken(newRefreshToken)
                     .AccessToken(newAccessToken)
                     .build();
-            redisService.setValues(newRefreshToken, email);
+//            redisService.setValues(newRefreshToken, email);
             redisService.delValues(refreshToken);
             return tokenResponse;
         } else {

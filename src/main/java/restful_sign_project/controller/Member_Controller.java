@@ -135,7 +135,7 @@ public class Member_Controller {
                 .secure(true)
                 .sameSite("None")
                 .path("/")
-                .maxAge(3600000)
+                .maxAge(2)
                 .build();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
@@ -167,7 +167,7 @@ public class Member_Controller {
                     .secure(true)
                     .sameSite("None")
                     .path("/")
-                    .maxAge(2)
+                    .maxAge(3600000)
                     .build();
 
             return ResponseEntity.ok()

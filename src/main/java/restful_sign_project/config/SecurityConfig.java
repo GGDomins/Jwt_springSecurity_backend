@@ -46,7 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // 로그아웃을 수행하기 위한 요청 경로 설정
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
-                .deleteCookies("refreshToken") // 쿠키 삭제
                 .and()
                 .cors() // CORS 구성을 활성화합니다.
                 /**

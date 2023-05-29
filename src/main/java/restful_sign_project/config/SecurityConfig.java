@@ -44,7 +44,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .logout().disable()
+                /**
+                 * logout().disable(): 이 설정은 로그아웃 기능을 비활성화합니다. 로그아웃 기능이 필요하지 않거나, 다른 인증 방식을 사용하는 경우에 사용할 수 있습니다.
+                 * 예를 들어, 애플리케이션에서 토큰 기반 인증을 사용하는 경우에는 세션 기반의 로그아웃 기능을 비활성화할 수 있습니다.
+                 * */
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                /**
+                 * sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS): 이 설정은 세션의 생성 방식을 설정합니다. STATELESS는 무상태(stateless) 세션을 의미합니다.
+                 * 즉, 서버에 클라이언트의 세션 정보를 저장하지 않고, 모든 요청이 독립적으로 처리되는 방식입니다.
+                 * 이는 RESTful API와 같이 세션 상태를 유지할 필요가 없는 상황에서 사용될 수 있습니다. 무상태 세션은 서버의 확장성과 보안을 향상시킬 수 있습니다.
+                 */
 //                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // 로그아웃을 수행하기 위한 요청 경로 설정
 //                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
                 .and()

@@ -128,7 +128,7 @@ public class Member_Controller {
                 .code(StatusCode.OK)
                 .message(ResponseMessage.LOGOUT_SUCCESS)
                 .build();
-        TokenResponse tokenResponse = jwtTokenProvider.refreshToken(refreshToken);
+        TokenResponse tokenResponse = jwtTokenProvider.logoutResfreshToken(refreshToken);
         // HTTP Only 쿠키에 RefreshToken 생성 후 전달
         ResponseCookie responseCookie = ResponseCookie.from("refreshToken",tokenResponse.getRefreshToken()) // 공백으로 보냄
                 .httpOnly(true)

@@ -30,8 +30,7 @@ public class RedisService {
 
     // 키-벨류 삭제
     public void delValues(String token) {
-        String redisKey = "Bearer " + token;
-        redisTemplate.delete(redisKey);
+        redisTemplate.delete(token);
     }
     public boolean exists(String token) {
         return redisTemplate.hasKey(token);

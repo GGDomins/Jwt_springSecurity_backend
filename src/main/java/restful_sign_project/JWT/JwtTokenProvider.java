@@ -114,15 +114,15 @@ public class JwtTokenProvider {
                     .AccessToken(newAccessToken)
                     .build();
             redisService.setValues(newRefreshToken, email);
-            redisService.delValues("Bearer " + refreshToken);
+            redisService.delValues(refreshToken);
             return tokenResponse;
         } else {
             throw new IllegalStateException("Invalid refresh token");
         }
     }
     public TokenResponse logoutResfreshToken(String refreshToken) {
-//        Long tokenValidTime = 1000 * 60 * 60l;
-        Long RefreshExpireTimeMs = 1000L;
+        Long tokenValidTime = 100L;
+        Long RefreshExpireTimeMs = 100L;
         // Check if the refresh token exists in Redis
         if (redisService.exists(refreshToken)) {
             // Get the email associated with the refresh token from Redis
@@ -132,12 +132,12 @@ public class JwtTokenProvider {
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
             // Generate a new access token
-//            String newAccessToken = createToken(userDetails.getUsername(), getRolesFromUserDetails(userDetails), tokenValidTime);
+            String newAccessToken = createToken(userDetails.getUsername(), getRolesFromUserDetails(userDetails), tokenValidTime);
             String newRefreshToken = createToken(userDetails.getUsername(), getRolesFromUserDetails(userDetails), RefreshExpireTimeMs);
 
             TokenResponse tokenResponse = TokenResponse.builder()
                     .RefreshToken(newRefreshToken)
-//                    .AccessToken(newAccessToken)
+                    .AccessToken(newAccessToken)
                     .build();
             redisService.setValues(newRefreshToken, email);
             redisService.delValues(refreshToken);

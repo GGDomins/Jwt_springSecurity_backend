@@ -64,8 +64,8 @@ git clone https://github.com/My-Rolling-paper/Jwt_springSecurity_backend.git
 
 <!-- RESULTS -->
 ## Results
-**RequestBody, ResponseBody** 
-### localhost:8080/signup
+
+### localhost:8080/signup (POST)
 
 <details>
     <summary> Success </summary>
@@ -84,14 +84,14 @@ git clone https://github.com/My-Rolling-paper/Jwt_springSecurity_backend.git
     "code": 200,
     "message": "회원 가입 성공",
     "data": {
-        "id": 1,
+        "id": 3,
         "name": "kevin",
         "email": "kevin0928@naver.com",
         "roles": [
             "ROLE_USER"
         ],
         "enabled": true,
-        "password": "$2a$10$ZDBOfnZBgF4CgAtL8bnEeONjc.WuXoCs86oPGN2SlB/Sa0FKLWFXK",
+        "password": "$2a$10$HRHe9./bnjCH6Aby3o/.MOEcOJnC7BDjsmPbyJ4yE9TIl5B5jzDBy",
         "username": "kevin0928@naver.com",
         "authorities": [
             {
@@ -99,8 +99,8 @@ git clone https://github.com/My-Rolling-paper/Jwt_springSecurity_backend.git
             }
         ],
         "accountNonLocked": true,
-        "accountNonExpired": true,
-        "credentialsNonExpired": true
+        "credentialsNonExpired": true,
+        "accountNonExpired": true
     }
 }
 ```
@@ -121,15 +121,16 @@ git clone https://github.com/My-Rolling-paper/Jwt_springSecurity_backend.git
 **ResponseBody**
 ```
 {
-    "code": 400,
+    "code": 409,
     "message": "이미 사용 중인 이메일입니다.",
     "data": null
 }
 ```
 </details>
 
+
 ---
-### localhost:8080/login
+### localhost:8080/login (POST)
 
 <details>
     <summary> Success </summary>
@@ -141,18 +142,20 @@ git clone https://github.com/My-Rolling-paper/Jwt_springSecurity_backend.git
     "password" : "1234"
 }
 ```
+
 **ResponseBody**
- ## header
+### header
  ```
-refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzE4ODk2LCJleHAiOjE2ODQ1MzQ4OTZ9.9j4sQY7XtQgtm45gWbgpsHFxqTeKZAQVwTqpplbWhkA; Path=/; Max-Age=3600000; Expires=Wed, 28 Jun 2023 02:21:37 GMT; Secure; HttpOnly
+refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg2MjMwMDU3LCJleHAiOjE2ODY0NDYwNTd9.ZceFy6-XgStt5B8xI1Gz258KTAaSOrNyqFrtDtjEVD0;
+ Path=/; Max-Age=3600000; Expires=Thu, 20 Jul 2023 05:14:19 GMT; Secure; HttpOnly; SameSite=None
  ```
- ## body
+ ### body
 ```
 {
     "code": 200,
     "message": "로그인 성공",
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzIyODQ4LCJleHAiOjE2ODQzMjY0NDh9.sQoCaB-Mt8B0nuIs9ySVXax4y_LjPUmHgiuOUrnAJPc",
-    "expireTimeMs": 1684326448397 // 현재시간 + expiredTime(1시간)
+    "token": null,
+    "expireTimeMs": null
 }
 ```
 </details>
@@ -171,9 +174,10 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 **ResponseBody**
 ```
 {
-    "code": 400,
+    "code": 401,
     "message": "이메일을 잘못 입력하셨습니다.",
-    "token": null
+    "token": null,
+    "expireTimeMs": null
 }
 ```
 </details>
@@ -191,27 +195,51 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 **ResponseBody**
 ```
 {
-    "code": 400,
+    "code": 403,
     "message": "비밀번호를 잘못 입력하셨습니다.",
-    "token": null
+    "token": null,
+    "expireTimeMs": null
 }
 ```
 </details>
 
 ---
-### localhost:8080/my-page
+### localhost:8080/logout (POST)
+
+<details>
+    <summary> Success </summary>
+
+### member has a refresh token!
+
+**ResponseBody**
+
+### body
+```
+{
+    "code": 200,
+    "message": "로그아웃 성공"
+}
+```
+</details>
+
+
+
+---
+### localhost:8080/my-page (GET)
 
 <details>
     <summary> Success </summary>
  
-**Authentication HttpServletRequest**
+### Authentication HttpServletRequest
 
 **ResponseBody**
 ```
 {
     "code": 200,
     "message": "회원 인증 성공",
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzA4OTQzLCJleHAiOjE2ODQzMTI1NDN9.j7kc9oXi87ET4yH9X2pmOhSwIMu391S3zmYE3e7T-qU"
+    "token": null,
+    "name": "kevin",
+    "email": "kevin0928@naver.com"
 }
 ```
 </details>
@@ -219,40 +247,35 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 <details>
     <summary> Fail </summary>
  
-**Non-authentication HttpServletRequest**
+### Non-authentication HttpServletRequest
 
 **ResponseBody**
 ```
 {
     "code": 401,
     "message": "회원 인증 실패",
-    "token": null
+    "token": null,
+    "name": null,
+    "email": null
 }
 ```
 </details>
 
 ---
-### localhost:8080/refresh-token
+### localhost:8080/refresh-token (POST)
 
 <details>
     <summary> Success </summary>
  
-**member has a refresh token**
+### member has a refresh token
 
-**RequestBody**
-```
-{
-
-    "refreshToken":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzA5MzY5LCJleHAiOjE2ODQ1MjUzNjl9.g34oe9qIMlU-mA4Obosr2LioezBwoKXMc9OPhM00GpM"
-}
-```
 **ResponseBody**
 ```
 {
     "code": 200,
     "message": "토큰 재발급 성공",
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIkFVVEhPUklUSUVTX0tFWSI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjg0MzIzNDgzLCJleHAiOjE2ODQzMjcwODN9.Ue78s-G6XOcw7Djodd0pNtsDsCGEmH58bc0em39TFiE",
-    "expireTimeMs": 1684327083420
+    "token": null,
+    "expireTimeMs": null
 }
 ```
 </details>
@@ -260,28 +283,21 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 <details>
     <summary> Fail </summary>
  
-**Member does not have a refresh token**
+### Member does not have a refresh token
 
-**RequestBody**
-```
-{
-
-    "refreshToken":""
-}
-```
 **ResponseBody**
 ```
 {
-    "timestamp": "2023-05-17T07:47:39.382+00:00",
-    "status": 500,
-    "error": "Internal Server Error",
-    "path": "/refresh-token"
+    "code": 400,
+    "message": "토큰 재발급 실패",
+    "token": null,
+    "expireTimeMs": null
 }
 ```
 </details>
 
 ---
-### localhost:8080/passwordChange/{id}
+### localhost:8080/passwordChange/{id} (POST)
 
 <details>
     <summary> Success </summary>
@@ -307,7 +323,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
     <summary> Fail </summary>
 
 
-**Wrong Password**
+### Wrong Password
 
 **RequestBody**
 ```
@@ -325,7 +341,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 }
 ```
 
-**Enter the same password twice**
+### Enter the same password twice
 
 **RequestBody**
 ```
@@ -354,12 +370,10 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 - [x] Task 1 RefreshToken 구현
 - [x] Task 2 AccessToken을 RefreshToken로 재발급
 - [ ] Task 4 Service - impl 분리
-- [ ] Task 3 API 명세서
+- [x] Task 3 API 명세서
 - [x] Task 4 프론트와 서버 통신
-- [ ] Task 5 Blog에 글 쓰기
 
-* NotionLink
-   * [Notion](https://shining-fish-553.notion.site/Checklist-to-finish-off-5b5197d4b9e140058c6e4b84df71af78)
+* [수정내용](https://shining-fish-553.notion.site/Checklist-to-finish-off-5b5197d4b9e140058c6e4b84df71af78)
 
 
 <!-- CONTRIBUTORS -->

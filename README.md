@@ -26,7 +26,7 @@ JWT, springSecurity,redis..etc 를 공부하고 실습해보는 Repo입니다.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-**API 명세서 및 블로그 작업중**
+# API 명세서 및 블로그 작업중
 
 ### Tech Stack
 프로그램에서 사용하는 라이브러리 및 종속성된 파일들입니다. 

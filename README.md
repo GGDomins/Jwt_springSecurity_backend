@@ -7,16 +7,21 @@ JWT, springSecurity,redis..etc 를 공부하고 실습해보는 Repo입니다.
 <!-- TABLE OF CONTENTS -->
 ## 목차
 
+* [schema](#schema)
 * [About the Project](#about-the-project)
   * [Tech Stack](#tech-stack)
   * [File Structure](#file-structure)
 * [Getting Started](#getting-started)
   * [Installation](#installation)
 * [Results](#results)
-* [Description](#description)
 * [Future Work](#future-work)
 * [Contributors](#contributors)
 * [License](#license)
+
+
+<!-- Description -->
+## schema
+![프로젝트 스키마 drawio](https://github.com/My-Rolling-paper/Jwt_springSecurity_backend/assets/104314593/26d7df14-7aca-458d-8eb4-2db6f8d5ae98)
 
 
 <!-- ABOUT THE PROJECT -->
@@ -360,9 +365,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 </details>
 
 ---
-<!-- Description -->
-## Description
-### 작업중
+
 
 <!-- FUTURE WORK -->
 ## Future Work
@@ -378,7 +381,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 
 <!-- CONTRIBUTORS -->
 ## Contributors
-~~[Member Name]~~
+[Yongjun Hong](https://github.com/yongjun-hong)
 
 
 

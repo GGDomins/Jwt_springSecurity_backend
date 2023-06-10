@@ -7,21 +7,28 @@ JWT, springSecurity,redis..etc 를 공부하고 실습해보는 Repo입니다.
 <!-- TABLE OF CONTENTS -->
 ## 목차
 
+* [schema](#schema)
 * [About the Project](#about-the-project)
+  * [Blog](#blog)
   * [Tech Stack](#tech-stack)
   * [File Structure](#file-structure)
 * [Getting Started](#getting-started)
   * [Installation](#installation)
 * [Results](#results)
-* [Description](#description)
 * [Future Work](#future-work)
 * [Contributors](#contributors)
 * [License](#license)
 
 
+<!-- Description -->
+## schema
+![프로젝트 스키마 drawio](https://github.com/My-Rolling-paper/Jwt_springSecurity_backend/assets/104314593/26d7df14-7aca-458d-8eb4-2db6f8d5ae98)
+
+
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-[redis로 refreshToken 저장, 조회, 삭제 하기](https://solution-is-here.tistory.com/172)
+### Blog
+1. [redis로 refreshToken 저장, 조회, 삭제 하기](https://solution-is-here.tistory.com/172)
 
 ### Tech Stack
 프로그램에서 사용하는 라이브러리 및 종속성된 파일들입니다. 
@@ -360,9 +367,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 </details>
 
 ---
-<!-- Description -->
-## Description
-### 작업중
+
 
 <!-- FUTURE WORK -->
 ## Future Work
@@ -378,7 +383,7 @@ refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbjA5MjhAbmF2ZXIuY29tIiwicm9sZX
 
 <!-- CONTRIBUTORS -->
 ## Contributors
-~~[Member Name]~~
+[Yongjun Hong](https://github.com/yongjun-hong)
 
 
 

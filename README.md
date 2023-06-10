@@ -21,7 +21,7 @@ JWT, springSecurity,redis..etc 를 공부하고 실습해보는 Repo입니다.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-**API 명세서 및 블로그 작업중**
+[redis로 refreshToken 저장, 조회, 삭제 하기](https://solution-is-here.tistory.com/172)
 
 ### Tech Stack
 프로그램에서 사용하는 라이브러리 및 종속성된 파일들입니다. 

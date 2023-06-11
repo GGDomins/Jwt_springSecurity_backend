@@ -192,7 +192,7 @@ public class Member_Controller {
         String newPassWord = password.get("newPassword");
         PasswordChangeResponse passwordChangeResponse = new PasswordChangeResponse();
         // ID를 기반으로 데이터베이스에서 해당 멤버를 조회합니다.
-        Optional<Member> op_member = memberRepository.findMemberByEmail(email);
+        Optional<Member> op_member = memberService.findMemberByEmail(email);
         Member member = op_member.get();
         if (!currentPassword.equals(newPassWord)) {
             if (encoder.matches(currentPassword, member.getPassword())) {

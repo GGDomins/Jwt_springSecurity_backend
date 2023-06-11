@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import restful_sign_project.JWT.JwtTokenProvider;
 import restful_sign_project.JWT.refresh.RefreshTokenRedisRepository;
 import restful_sign_project.controller.Response.PageResponse;
@@ -20,7 +21,7 @@ import restful_sign_project.service.RedisService;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 //@CrossOrigin(origins = "https://restful-jwt-project.herokuapp.com")
 public class Page_Controller {

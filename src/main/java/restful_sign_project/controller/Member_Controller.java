@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-@RestController("/api")
+@RestController
 @Slf4j
 @Transactional
 @EnableGlobalMethodSecurity(prePostEnabled = true)

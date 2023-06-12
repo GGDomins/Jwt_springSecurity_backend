@@ -67,7 +67,7 @@ JWT, springSecurity,redis..etc 를 공부하고 실습해보는 Repo입니다.
 ### Installation
 1. Clone the repo
 ```
-git clone https://github.com/My-Rolling-paper/Jwt_springSecurity_backend.git
+git clone https://github.com/yongjun-hong/Jwt_springSecurity.git
 ```
 
 <!-- RESULTS -->

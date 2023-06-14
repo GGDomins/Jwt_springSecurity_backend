@@ -1,7 +1,7 @@
 
 
 # Jwt_SpringSecurity_Backend
-JWT, springSecurity,redis..etc 를 공부하고 실습해보는 Repo입니다.
+JWT, springSecurity,redis..etc 를 공부하고 정리해보는 Repo입니다.
 
 
 <!-- TABLE OF CONTENTS -->

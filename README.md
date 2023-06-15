@@ -30,6 +30,7 @@ JWT, springSecurity,redis..etc 를 공부하고 정리해보는 Repo입니다.
 ### Blog
 1. [redis로 refreshToken 저장, 조회, 삭제 하기](https://solution-is-here.tistory.com/172)
 2. [JWT를 이용해 AccessToken 발급,검사,정보 추출](https://solution-is-here.tistory.com/173)
+3. [RefreshToken을 이용한 Logout 구현하기](https://solution-is-here.tistory.com/177)
 
 ### Tech Stack
 프로그램에서 사용하는 라이브러리 및 종속성된 파일들입니다. 

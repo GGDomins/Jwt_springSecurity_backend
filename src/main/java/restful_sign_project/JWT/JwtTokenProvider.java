@@ -139,7 +139,6 @@ public class JwtTokenProvider {
                     .RefreshToken(newRefreshToken)
                     .AccessToken(newAccessToken)
                     .build();
-//            redisService.setValues(newRefreshToken, email);
             redisService.delValues(refreshToken);
             return tokenResponse;
         } else {

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import restful_sign_project.JWT.JwtTokenProvider;
-import restful_sign_project.JWT.refresh.RefreshTokenRedisRepository;
 import restful_sign_project.controller.Response.PageResponse;
 import restful_sign_project.controller.status.ResponseMessage;
 import restful_sign_project.controller.status.StatusCode;

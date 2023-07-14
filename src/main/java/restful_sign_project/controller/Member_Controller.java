@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import restful_sign_project.JWT.JwtTokenProvider;
-import restful_sign_project.JWT.refresh.RefreshTokenRedisRepository;
 import restful_sign_project.controller.Response.*;
 import restful_sign_project.controller.status.ResponseMessage;
 import restful_sign_project.controller.status.StatusCode;

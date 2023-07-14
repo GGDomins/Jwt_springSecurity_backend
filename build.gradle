@@ -14,10 +14,7 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-jar{
-	baseName = "heroku-api"
-	version = '0.0.1'
-}
+
 repositories {
 	mavenCentral()
 }
